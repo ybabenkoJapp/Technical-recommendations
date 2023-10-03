@@ -40,14 +40,38 @@ class Car {
   readonly maker: string;
   readonly model: string;
   readonly year: number;
-  protected isWorking?: boolean = false;
-  private amountFuelInTank?: number;
-  protected fuelTankMaxCapacity: number = 45;
+  private _isWorking: boolean = false;
+  private _amountFuelInTank?: number;
+  private _fuelTankMaxCapacity: number = 45;
 
   constructor(maker: string, model: string, year: number) {
     this.maker = maker;
     this.model = model;
     this.year = year;
+  }
+
+  get amountFuelInTank(): number {
+    return this._amountFuelInTank || 0;
+  }
+
+  set amountFuelInTank(value: number) {
+    this._amountFuelInTank = value;
+  }
+
+  set fuelTankMaxCapacity(value: number) {
+    this._fuelTankMaxCapacity = value;
+  }
+
+  get fuelTankMaxCapacity() {
+    return this._fuelTankMaxCapacity;
+  }
+
+  get isWorking(): boolean {
+    return this._isWorking;
+  }
+
+  set isWorking(value: boolean) {
+    this._isWorking = value;
   }
 
   engineTurnOn() {
@@ -98,10 +122,6 @@ class Car {
     return `${this.maker} ${this.model} is parked now`;
   }
 
-  get fuelTankCapacity() {
-    return this.fuelTankMaxCapacity;
-  }
-
   fuelInTank() {
     return `${this.amountFuelInTank || 0} l`;
   }
@@ -119,7 +139,7 @@ class Car {
 
 class SerialCar extends Car {
   private readonly _numberOfPassengers: number;
-  private luggageVolume?: number;
+  private _luggageVolume?: number;
   constructor(
     maker: string,
     model: string,
@@ -131,13 +151,12 @@ class SerialCar extends Car {
     this.fuelTankMaxCapacity = fuelTankMaxCapacity;
     this._numberOfPassengers = numberOfPassengers;
   }
-  get _luggageVolume() {
-    // @ts-ignore
-    return `${this.maker} ${this.model} can transport of the ${this.luggageVolume} sm3 of luggage`;
-  }
 
-  set _luggageVolume(luggage: number) {
-    this.luggageVolume = luggage;
+  carLuggageVolume(): number | string {
+    return `${this.maker} ${this.model} can transport of the ${this._luggageVolume} sm3 of luggage`;
+  }
+  set luggageVolume(value: number) {
+    this._luggageVolume = value;
   }
 
   get numberOfPassengers() {
@@ -229,13 +248,16 @@ class ElectricCar extends Car {
 }
 
 const ford = new SerialCar("Ford", "Focus", 2014, 45, 4);
+ford.engineTurnOn();
+ford.fillUpTheFuel(10);
+console.log(ford.drive());
 const daf = new Truck("Daf", "M1", 2022, 2000);
 const volvo = new Truck("Volvo", "V1", 2012, 1500);
 const porsche = new SportCar("Porsche", "911", 2021, 350);
 const tesla = new ElectricCar("Tesla", "Model 3", 2020, 45);
 
 // porsche.accelerate();
-console.log(tesla.drive());
+// console.log(tesla.drive());
 
 // daf.engineTurnOn();
 // volvo.engineTurnOn();

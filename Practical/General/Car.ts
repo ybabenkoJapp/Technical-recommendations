@@ -1,41 +1,3 @@
-// class Car {
-//     engine: string; // hybrid, electric, ICEngine
-//     fuel: string; // diesel, petrol, electricity, gas,
-//     // hybrid car uses more than one means of energy, combining a petrol or diesel engine with an electric motor
-//     manufacturer: string;
-//     model: string;
-//     type: string; // sedan, hatchback, coupe, convertible, sports car, station wagon, SUV, minivan, crossover, Muscle car, Microcar, Sports sedan,
-//     win: string;
-//     year: string;
-//     modification: string;
-//     wheels: number;
-//     transmission: string; // manual, automatic, variator
-//     drivingWheelSide: string // right, left
-//
-//     constructor(engine: string, fuel: string, manufacturer: string, model: string, type: string, win: string, year: string, modification: string, wheels: number, transmission: string, drivingWheelSide:string) {
-//         this.engine = engine;
-//         this.fuel = fuel;
-//         this.manufacturer = manufacturer;
-//         this.model = model;
-//         this.type = type;
-//         this.win = win;
-//         this.year = year;
-//         this.modification = modification;
-//         this.wheels = wheels;
-//         this.transmission = transmission;
-//         this.drivingWheelSide = drivingWheelSide;
-//     }
-//
-//     engineTurnOn() {return `${this.engine} started work`}
-//     engineTurnOff() {return `${this.engine} stopped work`}
-//     drive() {
-//         return `${this.wheels} wheels are turning`
-//     }
-//     stop() {
-//         return `${this.wheels} wheels stopped turn`
-//     }
-// }
-
 class Car {
   readonly maker: string;
   readonly model: string;
@@ -126,7 +88,7 @@ class Car {
     return `${this.amountFuelInTank || 0} l`;
   }
 
-  fillUpTheFuel(fuel: number) {
+  refuelTheVehicle(fuel: number) {
     if (fuel >= this.fuelTankMaxCapacity) {
       fuel = this.fuelTankMaxCapacity;
     }
@@ -134,6 +96,8 @@ class Car {
       fuel = 0;
     }
     this.amountFuelInTank = fuel;
+    console.log("the car tank is refueled: " + this.amountFuelInTank + "l");
+    return `${this.amountFuelInTank || 0}L`;
   }
 }
 
@@ -199,8 +163,8 @@ class SportCar extends Car {
 }
 
 class ElectricCar extends Car {
-  protected readonly electricBatteryCapacity: number;
-  protected _batteryLevel?: number;
+  private readonly electricBatteryCapacity: number;
+  private _batteryLevel?: number = 50;
 
   constructor(
     maker: string,
@@ -213,7 +177,7 @@ class ElectricCar extends Car {
   }
 
   get batteryLevel() {
-    console.log(this._batteryLevel + "%");
+    // console.log("electric car battery level is: ", this._batteryLevel + "%");
     return this._batteryLevel;
   }
 
@@ -245,16 +209,28 @@ class ElectricCar extends Car {
     }
     return `${this.maker} ${this.model} is driving now`;
   }
+  refuelTheVehicle(power?: number) {
+    if (!power || !this.batteryLevel) {
+      return `There is not power the battery level remains: ${this.batteryLevel}%`;
+    }
+    if (power >= 100 || power > this.batteryLevel) {
+      this.batteryLevel = 100;
+      return `The battery is charged and level is ${this.batteryLevel}% there no need to charge`;
+    }
+    this.batteryLevel = power;
+    return `this electric battery charged and the capacity now is ${this.batteryLevel}%`;
+  }
 }
 
 const ford = new SerialCar("Ford", "Focus", 2014, 45, 4);
-ford.engineTurnOn();
-ford.fillUpTheFuel(10);
-console.log(ford.drive());
+// ford.engineTurnOn();
+// console.log(ford.drive());
 const daf = new Truck("Daf", "M1", 2022, 2000);
 const volvo = new Truck("Volvo", "V1", 2012, 1500);
 const porsche = new SportCar("Porsche", "911", 2021, 350);
 const tesla = new ElectricCar("Tesla", "Model 3", 2020, 45);
+console.log(ford.refuelTheVehicle(40));
+console.log(tesla.refuelTheVehicle(90));
 
 // porsche.accelerate();
 // console.log(tesla.drive());

@@ -51,7 +51,7 @@ function getOddNumbers() {
 }
 //@ts-ignore
 let results = getOddNumbers(10, 1, 3, 4, 8, 9);
-console.log(results);
+// console.log(results);
 
 // console.log("Result of the borrowed function: ", result);
 
@@ -77,8 +77,8 @@ function say(this: { greeting?: string } | void, name: string) {
   return `The greeting is: ${actualGreeting} ${name}!`
 }
 
-say('Tim');
-say.call(greetOption, 'Sam');
+// say('Tim');
+// say.call(greetOption, 'Sam');
 
 
 // 2. Pick up another function
@@ -89,7 +89,7 @@ function reducer() {
   return Array.prototype.reduce.call(arguments, add);
 }
 // @ts-ignore
-console.log(reducer(1,2,3,45,6));
+// console.log(reducer(1,2,3,45,6));
 
 // 3. Use call for utility functions
 const myArray: string[] = [];
@@ -112,4 +112,31 @@ function Food(this: any, title: string, price: number, category: string) {
 /// @ts-ignore
 const cheese = new Food('dorblue', 20, 'cheese');
 
-console.log(cheese);
+// console.log(cheese);
+
+// Examples of the BIND function method usage
+
+var x: number = 10;
+
+const myModule = {
+  x: 1021,
+  getXValue() {
+    if (this && this.x) {
+      console.log('This x value', this.x);
+      return this.x;
+    }
+    console.log('this is: ', this);
+    return null;
+  }
+}
+
+const myModuleTwo = {
+  x: 200,
+}
+// myModule.getXValue();
+
+const unboundedGetXValue = myModule.getXValue; // Error happens
+unboundedGetXValue(); // Error happens
+// const boundGetXValue = myModule.getXValue.bind(myModuleTwo);
+
+// boundGetXValue();

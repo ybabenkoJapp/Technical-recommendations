@@ -41,6 +41,18 @@ const dellPowerEdge = {
 
 const result = macbook.turnOn.apply(dellPowerEdge);
 
+function isOdd(number: number) {
+  return number % 2;
+}
+
+function getOddNumbers() {
+  //@ts-ignore
+  return Array.prototype.filter.apply(arguments, [isOdd]);
+}
+//@ts-ignore
+let results = getOddNumbers(10, 1, 3, 4, 8, 9);
+console.log(results);
+
 // console.log("Result of the borrowed function: ", result);
 
 // Examples of the CALL function method usage

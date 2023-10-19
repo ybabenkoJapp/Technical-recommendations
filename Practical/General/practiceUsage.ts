@@ -138,5 +138,49 @@ const myModuleTwo = {
 const unboundedGetXValue = myModule.getXValue; // Error happens
 unboundedGetXValue(); // Error happens
 // const boundGetXValue = myModule.getXValue.bind(myModuleTwo);
-
+//
 // boundGetXValue();
+
+function list(...args: number[]) {
+  return args;
+}
+
+const boundList = list.bind(null, 45);
+// console.log(boundList(1,2,35,67,8));
+
+const boundList2 = boundList.bind('try to set a new thisValue', 90, 100, 110);
+// console.log(boundList2(20))
+
+
+// Array flatMap() method usage
+
+// Roman's task // [[1,2,3], [4,5,6], [7,8,9]].flatMap(w => w) => [1,2,3,4,5,6]
+
+let taskArray = [[1,2,3], [4,5,6], [7,8,9]];
+let taskResult = taskArray.flatMap((el: number[], index: number, array) => {
+  if(index === array.length -1) {
+    return []
+  } else {
+    return el.map(i => i * 2)
+  }
+})
+
+console.info(taskResult)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

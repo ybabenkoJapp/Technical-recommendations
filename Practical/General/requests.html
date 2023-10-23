@@ -57,6 +57,29 @@
             return log
         })
         .catch((error) => console.error("[error happened]", error));
+
+    // async await implementation
+    async function getPosts() {
+        try {
+            const response = await fetch(baseUrl + "posts?_page=1&_limit=3")
+            return response.json()
+        } catch (error) {
+            console.error('[request failed]', error)
+        }
+    }
+
+    async function getComments() {
+        try {
+            const posts = await getPosts()
+            console.log('posts: ', posts)
+            const comments = await Promise.all(posts.map(async post => await fetchCommentsJson(post.id)))
+            console.log('comments: ', comments)
+        } catch (error) {
+            console.error('[request failed]', error)
+        }
+    }
+
+    getComments()
 </script>
 </body>
 </html>

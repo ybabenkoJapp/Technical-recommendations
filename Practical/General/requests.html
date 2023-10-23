@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>API Requests</title>
+</head>
+<body>
+<h1>API Requests</h1>
+<script>
+    const baseUrl = "https://jsonplaceholder.typicode.com/";
+
+    // with Promise.all variant
+    const fetchCommentsPromiseAll = (comments) => {
+        const commentsPromises = comments.map((comment) => fetchCommentsJson(comment.id))
+        return Promise.all(commentsPromises)
+    }
+
+    // with recursive func variant
+    const fetchCommentsSequentially = (posts, index = 0, comments = []) => {
+        if (index < posts.length) {
+            return fetchCommentsJson(posts[index].id).then(comment => {
+                comments.push(comment)
+                return fetchCommentsSequentially(posts, index + 1, comments)
+            })
+        } else {
+            return Promise.resolve(comments)
+        }
+    }
+
+    const fetchPostsJson = (url) => fetch(url)
+        .then((response) => response.json());
+
+    const fetchCommentsJson = (commentId) => fetch(baseUrl + `posts/${commentId}/comments`)
+        .then((r) => r.json());
+
+
+    function getCommentsToPostsFromServer(perPage, limit) {
+        return fetchPostsJson(baseUrl + `posts?_page=${perPage}&_limit=${limit}`)
+    }
+
+    getCommentsToPostsFromServer(1, 3)
+        .then(posts => fetchCommentsPromiseAll(posts))
+        .then(comments => comments.flatMap(x => x))
+        .then(log => {
+            console.log(log)
+            return log
+        })
+        .then(r => console.log('Plan next operation on demand', r[0].id))
+        .catch((error) => console.error("[error happened]", error));
+
+
+    getCommentsToPostsFromServer(1, 3)
+        .then(posts => fetchCommentsSequentially(posts))
+        .then(comments => comments.flatMap(x => x))
+        .then(log => {
+            console.log(log)
+            return log
+        })
+        .catch((error) => console.error("[error happened]", error));
+</script>
+</body>
+</html>

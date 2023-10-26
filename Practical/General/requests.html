@@ -36,10 +36,12 @@
     }
 
     const fetchPostsJson = (url) => fetch(url)
-        .then((response) => response.json());
+        .then(resolveHandler, rejectHandler)
+        .catch((error) => console.error("[error happened]", error));
 
     const fetchCommentsJson = (commentId) => fetch(`${baseUrl}/posts/${commentId}/comments`)
-        .then((r) => r.json());
+        .then(resolveHandler, rejectHandler)
+        .catch((error) => console.error("[error happened]", error))
 
 
     function getCommentsToPostsFromServer(perPage, limit) {
@@ -91,7 +93,9 @@
 
     // Parallel /users & /todos
     function getTodo(userId) {
-        return fetch(`${baseUrl}/users/${userId}/todos`).then(resolveHandler, rejectHandler).catch((error) => console.error("[error happened]", error))
+        return fetch(`${baseUrl}/users/${userId}/todos`)
+            .then(resolveHandler, rejectHandler)
+            .catch((error) => console.error("[error happened]", error))
     }
 
     function fetchTodos(userIdsArray) {
@@ -103,7 +107,9 @@
     }
 
     function getUser(userId) {
-        return fetch(`${baseUrl}/users/${userId}`).then(resolveHandler, rejectHandler).catch((error) => console.error("[error happened]", error))
+        return fetch(`${baseUrl}/users/${userId}`)
+            .then(resolveHandler, rejectHandler)
+            .catch((error) => console.error("[error happened]", error))
     }
 
     function fetchUsers(userIdsArray) {
@@ -115,7 +121,9 @@
     }
 
     function fetchParallelData() {
-        return fetch(`${baseUrl}/users`).then(resolveHandler, rejectHandler).catch((error) => console.error("[error happened]", error))
+        return fetch(`${baseUrl}/users`)
+            .then(resolveHandler, rejectHandler)
+            .catch((error) => console.error("[error happened]", error))
     }
 
     fetchParallelData()

@@ -7,7 +7,7 @@
 <body>
 <h1>API Requests</h1>
 <script>
-    const baseUrl = "https://jsonplaceholder.typicode.com/";
+    const baseUrl = "https://jsonplaceholder.typicode.com";
 
     // with Promise.all variant
     const fetchCommentsPromiseAll = (comments) => {
@@ -30,12 +30,12 @@
     const fetchPostsJson = (url) => fetch(url)
         .then((response) => response.json());
 
-    const fetchCommentsJson = (commentId) => fetch(baseUrl + `posts/${commentId}/comments`)
+    const fetchCommentsJson = (commentId) => fetch(`${baseUrl}/posts/${commentId}/comments`)
         .then((r) => r.json());
 
 
     function getCommentsToPostsFromServer(perPage, limit) {
-        return fetchPostsJson(baseUrl + `posts?_page=${perPage}&_limit=${limit}`)
+        return fetchPostsJson(`${baseUrl}/posts?_page=${perPage}&_limit=${limit}`)
     }
 
     getCommentsToPostsFromServer(1, 3)
@@ -61,7 +61,7 @@
     // async await implementation
     async function getPosts() {
         try {
-            const response = await fetch(baseUrl + "posts?_page=1&_limit=3")
+            const response = await fetch(`${baseUrl}/posts?_page=${page}&_limit=${limit}`)
             return response.json()
         } catch (error) {
             console.error('[request failed]', error)

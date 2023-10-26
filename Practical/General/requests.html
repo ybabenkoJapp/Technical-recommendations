@@ -127,7 +127,7 @@
     }
 
     fetchParallelData()
-        .then(users => fetchUsers([...new Set(users.map(user => user.id))]))
+        .then(users => fetchUsers(users.map(user => user.id)))
         .then(users => {
             console.log('users: ', users)
             return users

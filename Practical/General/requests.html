@@ -88,6 +88,48 @@
     }
 
     getComments()
+
+    // Parallel /users & /todos
+    function getTodo(userId) {
+        return fetch(`${baseUrl}/users/${userId}/todos`).then(resolveHandler, rejectHandler).catch((error) => console.error("[error happened]", error))
+    }
+
+    function fetchTodos(userIdsArray) {
+        const todoPromises = [];
+        for (const id of userIdsArray) {
+            todoPromises.push(getTodo(id))
+        }
+        return Promise.all([...todoPromises])
+    }
+
+    function getUser(userId) {
+        return fetch(`${baseUrl}/users/${userId}`).then(resolveHandler, rejectHandler).catch((error) => console.error("[error happened]", error))
+    }
+
+    function fetchUsers(userIdsArray) {
+        const userPromises = [];
+        for (const id of userIdsArray) {
+            userPromises.push(getUser(id))
+        }
+        return Promise.all([...userPromises])
+    }
+
+    function fetchParallelData() {
+        return fetch(`${baseUrl}/users`).then(resolveHandler, rejectHandler).catch((error) => console.error("[error happened]", error))
+    }
+
+    fetchParallelData()
+        .then(users => fetchUsers([...new Set(users.map(user => user.id))]))
+        .then(users => {
+            console.log('users: ', users)
+            return users
+        })
+        .then(users => fetchTodos([...new Set(users.map(user => user.id))]))
+        .then(todos => {
+            console.log('todos: ', todos)
+            return todos
+        })
+        .catch((error) => console.error("[error happened]", error))
 </script>
 </body>
 </html>

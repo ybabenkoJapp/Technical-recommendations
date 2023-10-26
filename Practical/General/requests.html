@@ -80,7 +80,7 @@
 
     async function getComments() {
         try {
-            const posts = await getPosts(1,3)
+            const posts = await getPosts(1, 3)
             console.log('posts: ', posts)
             const comments = await Promise.all(posts.map(async post => await fetchCommentsJson(post.id)))
             console.log('comments: ', comments)

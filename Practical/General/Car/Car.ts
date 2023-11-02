@@ -229,46 +229,32 @@ const daf = new Truck("Daf", "M1", 2022, 2000);
 const volvo = new Truck("Volvo", "V1", 2012, 1500);
 const porsche = new SportCar("Porsche", "911", 2021, 350);
 const tesla = new ElectricCar("Tesla", "Model 3", 2020, 45);
+
+ford.engineTurnOn()
+ford.drive()
+ford.park()
+ford.engineTurnOff()
+
+tesla.engineTurnOn()
+tesla.drive()
+tesla.park()
+tesla.engineTurnOff()
 console.log(ford.refuelTheVehicle(40));
 console.log(tesla.refuelTheVehicle(90));
 
-// porsche.accelerate();
-// console.log(tesla.drive());
+porsche.accelerate();
+console.log(tesla.drive());
 
-// daf.engineTurnOn();
-// volvo.engineTurnOn();
-// tesla.engineTurnOn();
+daf.engineTurnOn();
+volvo.engineTurnOn();
+tesla.engineTurnOn();
 
-// let dafStatus = daf.checkEngine();
-// let volvoStatus = volvo.checkEngine();
-// let teslaStatus = tesla.checkEngine();
-// console.log(daf.drive());
-// console.log(
-//   "dafStatus",
-//   dafStatus,
-//   "volvoStatus",
-//   volvoStatus,
-//   "teslaStatus",
-//   teslaStatus,
-// );
+console.log(daf.drive());
 
-// daf.pullCargo();
-// volvo.pullCargo();
-// tesla.accelerate();
-//
-// daf.engineTurnOff();
-// volvo.engineTurnOff();
-// tesla.engineTurnOff();
-//
-// dafStatus = daf.checkEngine();
-// volvoStatus = volvo.checkEngine();
-// teslaStatus = tesla.checkEngine();
+daf.pullCargo();
+volvo.pullCargo();
+porsche.accelerate();
 
-// console.log(
-//   "dafStatus",
-//   dafStatus,
-//   "volvoStatus",
-//   volvoStatus,
-//   "teslaStatus",
-//   teslaStatus,
-// );
+daf.engineTurnOff();
+volvo.engineTurnOff();
+tesla.engineTurnOff();

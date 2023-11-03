@@ -1,3 +1,7 @@
+// TODO make Car as abstract class
+// class FuelStation for polymorphism
+// class ElectricStation for polymorphism
+
 class Car {
   readonly maker: string;
   readonly model: string;

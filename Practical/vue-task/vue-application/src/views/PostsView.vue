@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import axios from "axios";
+import CreatePost from "@/components/CreatePost.vue";
 
 interface IPost {
   userId: number;
@@ -13,6 +14,11 @@ interface IPost {
 const posts = ref<IPost[] | null>(null);
 
 axios("posts").then((res) => (posts.value = res.data as IPost[]));
+
+function pushPost(emittedValue: unknown) {
+  console.log("emittedValue: ", emittedValue);
+  if (posts.value && emittedValue) posts.value.unshift(emittedValue as IPost);
+}
 
 // TODO Implement emulation of creating and editing post
 </script>
@@ -31,28 +37,7 @@ axios("posts").then((res) => (posts.value = res.data as IPost[]));
       <v-card-text>
         <p>{{ item.body }}</p>
         <br />
-        <v-dialog width="500">
-          <template v-slot:activator="{ props }">
-            <v-btn text="Open Dialog" v-bind="props"></v-btn>
-          </template>
-
-          <template v-slot:default="{ isActive }">
-            <v-card title="Dialog">
-              <v-card-text>
-                <!-- <Form /> -->
-              </v-card-text>
-
-              <v-card-actions>
-                <v-spacer></v-spacer>
-
-                <v-btn
-                  text="Close Dialog"
-                  @click="isActive.value = false"
-                ></v-btn>
-              </v-card-actions>
-            </v-card>
-          </template>
-        </v-dialog>
+        <CreatePost @push-post="pushPost" />
       </v-card-text>
     </v-card>
   </section>

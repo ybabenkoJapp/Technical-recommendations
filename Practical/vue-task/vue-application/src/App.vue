@@ -1,83 +1,27 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from "vue-router";
+<script lang="ts" setup>
+import DashboardView from "@/views/DashboardView.vue";
+// TODO 1. Implement emulation of creating and editing post / photo in the modal + form + validation (fields should be required)
+//          - Create array of received posts and photos, mutate post and photo found by ID
+//          - Add new Post and Photo to the beginning of the array
+// TODO 2. Implement delete Post and Photo
+// TODO 3. Implement auth by common router practice using hardcoded user credentials.
+//          - Implement auth form and validate user credentials with hardcoded data and allow user page route
+//          - Based on Editor user (hardcoded) show/hide Users page https://jsonplaceholder.typicode.com/users
 </script>
 
 <template>
-  <header>
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/dashboard">Dashboard</RouterLink>
-        <RouterLink to="/posts">Posts</RouterLink>
-        <RouterLink to="/albums">Albums</RouterLink>
-        <RouterLink to="/photos">Photos</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+  <v-app>
+    <DashboardView />
+    <main>
+      <RouterView />
+    </main>
+  </v-app>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+<style>
+main {
+  min-height: 100vh;
+  max-width: 100%;
+  position: relative;
 }
 </style>

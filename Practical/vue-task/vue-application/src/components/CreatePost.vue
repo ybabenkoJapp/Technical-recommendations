@@ -51,10 +51,13 @@ const submitForm = () => {
           id="title"
           v-model="title"
           class="input-control"
+          minlength="3"
           name="title"
           placeholder="Title"
+          required
           type="text"
         />
+        <span aria-live="polite" class="error"></span>
       </div>
       <div class="input-group">
         <label for="post-editor">Body</label>
@@ -63,11 +66,14 @@ const submitForm = () => {
           v-model="postBody"
           class="input-control"
           cols="5"
+          minlength="3"
           name="post-editor"
           placeholder="Post body"
+          required
           rows="6"
           type="text"
         />
+        <span aria-live="polite" class="error"></span>
       </div>
       <button class="btn" type="submit">Save</button>
     </form>
@@ -110,5 +116,19 @@ const submitForm = () => {
 
 textarea.input-control {
   height: unset !important;
+}
+
+/* input validation */
+textarea:invalid:required,
+input:invalid:required {
+  border: 1px solid red;
+}
+
+/*input:invalid:required {*/
+/*  background-image: linear-gradient(to right, pink, lightgreen);*/
+/*}*/
+
+input:valid {
+  border: 2px solid black;
 }
 </style>

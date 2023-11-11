@@ -1,7 +1,7 @@
 // Create base class
 class Car {
   // let's leave these properties without access modifiers for now
-  isWorking = false;
+  isWorking: boolean = false;
   brand: string;
   model: string;
   year: number;
@@ -127,3 +127,14 @@ sportCar.accelerate();
 
 // ElectricCar class methods:
 electricCar.chargeBattery();
+
+// As all the properties of the base and derived classes are implicit set as public
+// we can easily override their values
+regularCar.isWorking = false;
+sportCar.brand = "bike";
+truckCar.model = "iPhone X";
+sportCar.year = 3005;
+truckCar.payloadCapacity = 0;
+sportCar.maxSpeed = 50;
+electricCar.batteryCapacity = 1;
+// we need to hide them from user

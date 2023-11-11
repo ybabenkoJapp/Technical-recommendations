@@ -1,6 +1,6 @@
-// We can achieve encapsulation by using access modifiers in TypeScript
+// Let's implement polymorphism
 
-class Car {
+class CarPolymorph {
   // Now we encapsulate data by access modifiers
   private isWorking: boolean = false;
 
@@ -39,7 +39,7 @@ class Car {
 }
 
 // Create derived Truck class
-class Truck extends Car {
+class Truck extends CarPolymorph {
   constructor(
     brand: string,
     model: string,
@@ -63,7 +63,7 @@ class Truck extends Car {
 }
 
 // Create derived SportCar class
-class SportCar extends Car {
+class SportCar extends CarPolymorph {
   constructor(
     brand: string,
     model: string,
@@ -83,7 +83,7 @@ class SportCar extends Car {
 }
 
 // Create derived ElectricCar class
-class ElectricCar extends Car {
+class ElectricCar extends CarPolymorph {
   constructor(
     brand: string,
     model: string,
@@ -101,11 +101,3 @@ class ElectricCar extends Car {
     );
   }
 }
-
-// let's define variables with our classes
-const regularCar: Car = new Car("Ford", "Focus 3", 2014);
-const truckCar: Truck = new Truck("Volvo", "F10", 2018, 10000);
-const sportCar: SportCar = new SportCar("Ford", "Mustang", 2019, 300);
-const electricCar: ElectricCar = new ElectricCar("Nissan", "Leaf", 2020, 48);
-
-// regularCar.brand <== an typescript error occurs

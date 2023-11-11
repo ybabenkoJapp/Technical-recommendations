@@ -211,6 +211,11 @@ function getComputedVehicleInformation(infoProviders: InfoProvider[]) {
   }
 }
 
+function cargoServiceController(service: CargoService) {
+  service.loadCargo();
+  service.pullCargo();
+}
+
 // let's define variables with our classes
 const regularCar: CarPolymorph = new CarPolymorph("Ford", "Focus 3", 2014);
 const truckCar: Truck = new Truck("Volvo", "F10", 2018, 10000);
@@ -220,10 +225,12 @@ const motorboat: Motorboat = new Motorboat();
 
 // operateVehicle(truckCar);
 // operateVehiclesWithActionAndInfo([regularCar, truckCar, sportCar, electricCar, motorboat]);
-getComputedVehicleInformation([
-  regularCar,
-  truckCar,
-  sportCar,
-  electricCar,
-  motorboat,
-]);
+// getComputedVehicleInformation([
+//   regularCar,
+//   truckCar,
+//   sportCar,
+//   electricCar,
+//   motorboat,
+// ]);
+
+cargoServiceController(truckCar);

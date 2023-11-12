@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>Practice usage Call Apply Bind</h2>
+<script>
+    function greet(greeting, message) {
+        return `${greeting} ${this.name}! ${message}`;
+    }
+    class Person {
+        constructor(name, surname) {
+            this.name = name;
+            this.surname = surname;
+        }
+    }
+
+    const person = new Person('Sam', 'Doe');
+    console.log(person);
+    // let's make greetings to person object
+    const personGreetings1 = greet.call(person, 'Hi', 'How are you doing?');
+    const personGreetings2 = greet.apply(person, ['Good day', 'Have a nice trip']);
+
+    console.log(personGreetings1);
+    console.log(personGreetings2);
+
+    // use apply with arrays
+    const targetArray = [1,2,3,4];
+    const mergeArray = [5,6,7,8,9];
+
+    targetArray.push.apply(targetArray, mergeArray)
+    console.log('output of the apply method: ', targetArray);
+
+    targetArray.push.call(targetArray, 'one', 'two', 'three');
+    console.log('output of the call method: ', targetArray);
+
+    const getMaxValue = Math.max.apply(null, mergeArray);
+
+    console.log('The max value is: ', getMaxValue)
+
+    // pick up another function
+    const macbook = {
+        name: "Macbook",
+        isWork: false,
+        turnOn() {
+            this.isWork = true;
+            return `The ${this.name} is turned on`;
+        },
+        turnOff() {
+            this.isWork = false;
+            return `The ${this.name} is turned off`;
+        },
+    };
+
+    const dellPowerEdge = {
+        name: "Dell PowerEdge T30",
+        isWork: false,
+    };
+
+    const result = macbook.turnOn.apply(dellPowerEdge);
+    console.log('pick up another function result output: ', result);
+</script>
+</body>
+</html>

@@ -1,134 +1,121 @@
-class Car {
-  readonly maker: string;
-  readonly model: string;
-  readonly year: number;
-  private _isWorking: boolean = false;
-  private _amountFuelInTank?: number;
-  private _fuelTankMaxCapacity: number = 45;
+interface FuelStation {
+  amountFuelInTank: number;
 
-  constructor(maker: string, model: string, year: number) {
-    this.maker = maker;
-    this.model = model;
-    this.year = year;
-  }
+  refuel(fuel: number): void;
+}
 
-  get amountFuelInTank(): number {
-    return this._amountFuelInTank || 0;
-  }
+interface EnginStatusWork {
+  startEngine(): string;
 
-  set amountFuelInTank(value: number) {
-    this._amountFuelInTank = value;
-  }
+  stopEngine(): string;
 
-  set fuelTankMaxCapacity(value: number) {
-    this._fuelTankMaxCapacity = value;
-  }
+  engineStatus(): string;
+}
 
-  get fuelTankMaxCapacity() {
-    return this._fuelTankMaxCapacity;
-  }
+interface ChargeStation {
+  batteryLevel: number;
 
-  get isWorking(): boolean {
-    return this._isWorking;
-  }
+  batteryCharge(power: number): void;
+}
 
-  set isWorking(value: boolean) {
-    this._isWorking = value;
-  }
+interface Drivable {
+  drive(): string;
+}
 
-  engineTurnOn() {
-    this.isWorking = true;
-  }
-  engineTurnOff() {
-    this.isWorking = false;
-  }
+interface Parkable {
+  park(): string;
+}
 
-  private checkEngineWork() {
-    if (!this.isWorking) {
-      console.error("the engine is turned off");
-      return false;
-    }
-    return this.isWorking;
-  }
+abstract class Car implements Drivable, Parkable, EnginStatusWork {
+  protected isWorking: boolean = false;
 
-  private checkLevelOfFuel() {
-    if (this.amountFuelInTank === 0) {
-      console.error("The lack of fuel in the tank please fill up fuel");
-      return false;
-    }
-    if (this.amountFuelInTank && this.amountFuelInTank <= 5) {
-      console.warn(
-        "Low level of the fuel in the tank, please drive to the nearest petrol station",
-      );
-      return false;
-    }
-    return true;
-  }
+  protected constructor(
+    readonly maker: string,
+    readonly model: string,
+    readonly year: number,
+  ) {}
 
-  protected checkAllSystems() {
-    return this.checkEngineWork() && this.checkLevelOfFuel();
-  }
+  abstract checkAllSystems(): boolean;
 
-  drive() {
+  drive(): string {
     if (!this.checkAllSystems()) {
-      return `${this.maker} ${this.model} can not drive now please check if there fuel in trunk or the engine is turned on`;
+      return `${this.maker} ${this.model} can not drive now. Please check if there is fuel in the trunk or if the engine is turned on.`;
     }
     return `${this.maker} ${this.model} is driving now`;
   }
 
-  park() {
+  park(): string {
     if (!this.checkAllSystems()) {
-      return `${this.maker} ${this.model} can not park now please check if there fuel in trunk or the engine is turned on`;
+      return `${this.maker} ${this.model} can not park now. Please check if there is fuel in the trunk or if the engine is turned on.`;
     }
 
     return `${this.maker} ${this.model} is parked now`;
   }
 
-  fuelInTank() {
-    return `${this.amountFuelInTank || 0} l`;
+  startEngine() {
+    this.isWorking = true;
+    return `${this.maker} ${this.model} engine is working`;
   }
 
-  refuelTheVehicle(fuel: number) {
+  stopEngine() {
+    this.isWorking = false;
+    return `${this.maker} ${this.model} engine has been stopped`;
+  }
+
+  engineStatus() {
+    return this.isWorking
+      ? `${this.maker} ${this.model} engine is working`
+      : `${this.maker} ${this.model} engine is off`;
+  }
+}
+
+class RegularCar extends Car implements FuelStation {
+  constructor(
+    maker: string,
+    model: string,
+    year: number,
+    private fuelTankMaxCapacity: number,
+  ) {
+    super(maker, model, year);
+  }
+
+  private _amountFuelInTank: number = 0;
+
+  get amountFuelInTank(): number {
+    return this._amountFuelInTank || 0;
+  }
+
+  checkAllSystems(): boolean {
+    return this.isWorking && this.checkLevelOfFuel();
+  }
+
+  refuel(fuel: number): void {
     if (fuel >= this.fuelTankMaxCapacity) {
       fuel = this.fuelTankMaxCapacity;
     }
     if (fuel < 0) {
       fuel = 0;
     }
-    this.amountFuelInTank = fuel;
-    console.log("the car tank is refueled: " + this.amountFuelInTank + "l");
-    return `${this.amountFuelInTank || 0}L`;
+    this._amountFuelInTank = fuel;
+    console.log("The car tank is refueled: " + this._amountFuelInTank + "L");
+  }
+
+  private checkLevelOfFuel(): boolean {
+    if (this._amountFuelInTank === 0) {
+      console.error("The lack of fuel in the tank. Please fill up fuel.");
+      return false;
+    }
+    if (this._amountFuelInTank && this._amountFuelInTank <= 5) {
+      console.warn(
+        "Low level of fuel in the tank. Please drive to the nearest petrol station.",
+      );
+      return false;
+    }
+    return true;
   }
 }
 
-class SerialCar extends Car {
-  private readonly _numberOfPassengers: number;
-  private _luggageVolume?: number;
-  constructor(
-    maker: string,
-    model: string,
-    year: number,
-    fuelTankMaxCapacity: number,
-    numberOfPassengers: number,
-  ) {
-    super(maker, model, year);
-    this.fuelTankMaxCapacity = fuelTankMaxCapacity;
-    this._numberOfPassengers = numberOfPassengers;
-  }
-
-  carLuggageVolume(): number | string {
-    return `${this.maker} ${this.model} can transport of the ${this._luggageVolume} sm3 of luggage`;
-  }
-  set luggageVolume(value: number) {
-    this._luggageVolume = value;
-  }
-
-  get numberOfPassengers() {
-    return `${this.maker} ${this.model} can transport ${this._numberOfPassengers} passengers`;
-  }
-}
-
-class Truck extends Car {
+class Truck extends Car implements FuelStation {
   readonly payloadCapacity: number;
 
   constructor(
@@ -141,53 +128,138 @@ class Truck extends Car {
     this.payloadCapacity = payloadCapacity;
   }
 
-  pullCargo() {
-    console.log(`Pulling cargo ${this.payloadCapacity} kg`);
+  private _amountFuelInTank: number = 0;
+
+  get amountFuelInTank(): number {
+    return this._amountFuelInTank || 0;
+  }
+
+  checkAllSystems(): boolean {
+    return this.isWorking && this.payloadCapacity != 0;
+  }
+
+  refuel(fuel: number): void {
+    if (fuel >= this.amountFuelInTank) {
+      fuel = this.amountFuelInTank;
+    }
+    if (fuel < 0) {
+      fuel = 0;
+    }
+    this._amountFuelInTank = fuel;
+    console.log("The truck tank is refueled: " + this._amountFuelInTank + "L");
   }
 }
 
-class SportCar extends Car {
+class SportCar extends Car implements FuelStation {
   readonly maxSpeed: number = 400;
-
-  constructor(maker: string, model: string, year: number, maxSpeed: number) {
-    super(maker, model, year);
-    this.maxSpeed = maxSpeed;
-  }
-  accelerate() {
-    this.useTurboBoost();
-    return `${this.maker} ${this.model} is accelerating to ${this.maxSpeed} kmh`;
-  }
-  protected useTurboBoost() {
-    console.log(`Turbo Boost is used`);
-  }
-}
-
-class ElectricCar extends Car {
-  private readonly electricBatteryCapacity: number;
-  private _batteryLevel?: number = 50;
 
   constructor(
     maker: string,
     model: string,
     year: number,
-    batteryCapacity: number,
+    private fuelTankMaxCapacity: number,
+    maxSpeed: number,
   ) {
     super(maker, model, year);
-    this.electricBatteryCapacity = batteryCapacity;
+    this.maxSpeed = maxSpeed;
   }
 
-  get batteryLevel() {
-    // console.log("electric car battery level is: ", this._batteryLevel + "%");
+  private _amountFuelInTank: number = 0;
+
+  get amountFuelInTank(): number {
+    return this._amountFuelInTank || 0;
+  }
+
+  checkAllSystems(): boolean {
+    return this.isWorking && this.amountFuelInTank > 0;
+  }
+
+  accelerate() {
+    this.useTurboBoost();
+    return `${this.maker} ${this.model} is accelerating to ${this.maxSpeed} kmh`;
+  }
+
+  refuel(fuel: number): void {
+    if (fuel >= this.fuelTankMaxCapacity) {
+      fuel = this.fuelTankMaxCapacity;
+    }
+    if (fuel < 0) {
+      fuel = 0;
+    }
+    this._amountFuelInTank = fuel;
+    console.log(
+      "The sport car tank is refueled: " + this._amountFuelInTank + "L",
+    );
+  }
+
+  protected useTurboBoost() {
+    console.log(`Turbo Boost is used`);
+  }
+}
+
+class ElectricCar extends Car implements ChargeStation {
+  constructor(
+    maker: string,
+    model: string,
+    year: number,
+    private electricBatteryCapacity: number,
+  ) {
+    super(maker, model, year);
+    this.electricBatteryCapacity = electricBatteryCapacity;
+  }
+
+  private _batteryLevel: number = 50;
+
+  get batteryLevel(): number {
     return this._batteryLevel;
   }
 
-  set batteryLevel(per) {
-    this._batteryLevel = per;
+  set batteryLevel(value: number) {
+    this._batteryLevel = value;
   }
 
-  private checkBatteryChargeVolume() {
+  checkAllSystems(): boolean {
+    return this.isWorking && this.checkBatteryChargeVolume();
+  }
+
+  drive(): string {
+    if (!this.checkAllSystems()) {
+      return `${this.maker} ${this.model} can not drive now. Please check battery charge or if the engine is turned on.`;
+    }
+    return `${this.maker} ${this.model} is driving now`;
+  }
+
+  park(): string {
+    if (!this.checkAllSystems()) {
+      return `${this.maker} ${this.model} can not park now. Please check battery charge or if the engine is turned on.`;
+    }
+
+    return `${this.maker} ${this.model} is parked now`;
+  }
+
+  batteryCharge(power: number): void {
+    if (!power || !this._batteryLevel) {
+      console.log(
+        `There is no power. The battery level remains: ${this._batteryLevel}%`,
+      );
+      return;
+    }
+    if (power >= 100 || power > this._batteryLevel) {
+      this._batteryLevel = 100;
+      console.log(
+        `The battery is charged and the level is ${this._batteryLevel}%. There is no need to charge.`,
+      );
+      return;
+    }
+    this._batteryLevel = power;
+    console.log(
+      `The electric battery is charged, and the capacity now is ${this._batteryLevel}%`,
+    );
+  }
+
+  private checkBatteryChargeVolume(): boolean {
     if (!this._batteryLevel) {
-      console.error("You should battery charge");
+      console.error("You should charge the battery");
       return false;
     }
     if (this._batteryLevel <= 5) {
@@ -196,79 +268,50 @@ class ElectricCar extends Car {
     }
     return true;
   }
+}
 
-  protected checkAllSystems() {
-    if (!this.isWorking) {
-      return false;
+const ford = new RegularCar("Ford", "Focus", 2014, 45);
+const daf = new Truck("Daf", "M1", 2022, 12000);
+const volvo = new Truck("Volvo", "F-10", 2012, 10000);
+const porsche = new SportCar("Porsche", "911", 2021, 50, 350);
+const nissan = new ElectricCar("Nissan", "leaf", 2020, 45);
+const volkswagen = new ElectricCar("Volkswagen", "e-Golf", 2020, 50);
+
+const vehiclesArray = [ford, daf, volvo, porsche, nissan];
+const electricVehiclesArray = [nissan, volkswagen];
+
+function startAllEngines(vehicles: Car[]) {
+  for (const vehicle of vehicles) {
+    console.log("---");
+    console.log(vehicle.engineStatus());
+    console.log("---");
+    if (!!vehicle.stopEngine()) {
+      console.log(vehicle.startEngine());
     }
-    return this.isWorking && this.checkBatteryChargeVolume();
-  }
-  drive() {
-    if (!this.checkAllSystems()) {
-      return `${this.maker} ${this.model} can not drive now please check battery charge or the engine is turned on`;
-    }
-    return `${this.maker} ${this.model} is driving now`;
-  }
-  refuelTheVehicle(power?: number) {
-    if (!power || !this.batteryLevel) {
-      return `There is not power the battery level remains: ${this.batteryLevel}%`;
-    }
-    if (power >= 100 || power > this.batteryLevel) {
-      this.batteryLevel = 100;
-      return `The battery is charged and level is ${this.batteryLevel}% there no need to charge`;
-    }
-    this.batteryLevel = power;
-    return `this electric battery charged and the capacity now is ${this.batteryLevel}%`;
   }
 }
 
-const ford = new SerialCar("Ford", "Focus", 2014, 45, 4);
-// ford.engineTurnOn();
-// console.log(ford.drive());
-const daf = new Truck("Daf", "M1", 2022, 2000);
-const volvo = new Truck("Volvo", "V1", 2012, 1500);
-const porsche = new SportCar("Porsche", "911", 2021, 350);
-const tesla = new ElectricCar("Tesla", "Model 3", 2020, 45);
-console.log(ford.refuelTheVehicle(40));
-console.log(tesla.refuelTheVehicle(90));
+function stopAllEngines(vehicles: Car[]) {
+  for (const vehicle of vehicles) {
+    console.log("---");
+    console.log(vehicle.engineStatus());
+    console.log("---");
+    if (!!vehicle.startEngine()) {
+      console.log(vehicle.stopEngine());
+    }
+  }
+}
 
-// porsche.accelerate();
-// console.log(tesla.drive());
+startAllEngines(vehiclesArray);
+stopAllEngines(vehiclesArray);
 
-// daf.engineTurnOn();
-// volvo.engineTurnOn();
-// tesla.engineTurnOn();
+function electricCar(cars: ElectricCar[]) {
+  for (const car of cars) {
+    console.log(car.batteryLevel);
+    if (car.batteryLevel <= 50) {
+      car.batteryCharge(100);
+    }
+  }
+}
 
-// let dafStatus = daf.checkEngine();
-// let volvoStatus = volvo.checkEngine();
-// let teslaStatus = tesla.checkEngine();
-// console.log(daf.drive());
-// console.log(
-//   "dafStatus",
-//   dafStatus,
-//   "volvoStatus",
-//   volvoStatus,
-//   "teslaStatus",
-//   teslaStatus,
-// );
-
-// daf.pullCargo();
-// volvo.pullCargo();
-// tesla.accelerate();
-//
-// daf.engineTurnOff();
-// volvo.engineTurnOff();
-// tesla.engineTurnOff();
-//
-// dafStatus = daf.checkEngine();
-// volvoStatus = volvo.checkEngine();
-// teslaStatus = tesla.checkEngine();
-
-// console.log(
-//   "dafStatus",
-//   dafStatus,
-//   "volvoStatus",
-//   volvoStatus,
-//   "teslaStatus",
-//   teslaStatus,
-// );
+electricCar(electricVehiclesArray);

@@ -41,10 +41,8 @@ const submitForm = () => {
 
 <template>
   <div class="post-container">
-    <p>Check v-model Title: {{ title }}</p>
-    <p>Check v-model Body: {{ postBody }}</p>
+    <h2 class="post-title">Create Post</h2>
     <form class="post-form" @submit.prevent="submitForm">
-      <h2 class="post-title">Create Post</h2>
       <div class="input-group">
         <label for="title">Title</label>
         <input

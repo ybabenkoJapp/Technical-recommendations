@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import axios from "axios";
+import TeleportModal from "@/modals/TeleportModal.vue";
 import CreatePost from "@/components/CreatePost.vue";
+import Card from "@/components/Card.vue";
 
 interface IPost {
   userId: number;
@@ -21,24 +23,47 @@ function pushPost(emittedValue: unknown) {
 }
 
 // TODO Implement emulation of creating and editing post
+
+fetch("https://jsonplaceholder.typicode.com/posts/1", {
+  method: "PUT",
+  body: JSON.stringify({
+    id: 1,
+    title: "foo",
+    body: "bar",
+    userId: 1,
+  }),
+  headers: {
+    "Content-type": "application/json; charset=UTF-8",
+  },
+})
+  .then((response) => response.json())
+  .then((json) => console.log(json));
+
+const showModal = ref(false);
 </script>
 
 <template>
   <section class="posts-view">
-    <v-card
+    <header>
+      <button @click="() => (showModal = !showModal)">Create post</button>
+      <TeleportModal :show="showModal">
+        <CreatePost />
+      </TeleportModal>
+    </header>
+    <Card
       v-for="item in posts"
       v-if="posts"
       :key="item.id"
-      class="mx-auto my-5"
+      :body="item.body"
+      :title="item.title"
+      class="mx-auto my-5 position-relative"
       width="1000"
-    >
-      <template v-slot:title> {{ item.title }}</template>
-
-      <v-card-text>
-        <p>{{ item.body }}</p>
-        <br />
-        <CreatePost @push-post="pushPost" />
-      </v-card-text>
-    </v-card>
+    />
   </section>
 </template>
+
+<style>
+.posts-view {
+  padding-left: 200px;
+}
+</style>

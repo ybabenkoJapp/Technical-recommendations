@@ -2,8 +2,8 @@ function test<T>(arg: T): T {
   return arg;
 }
 
-test(true);
-test("string");
+test<boolean>(true);
+test<string>("string");
 
 // Type alias
 type AnyAble<Type> = { key: Type };
@@ -14,6 +14,11 @@ console.log(test1);
 class TestGenericClass<Type> {
   private _items: Array<Type> = [];
 
+  get items() {
+    console.log(this._items);
+    return this._items;
+  }
+
   add(item: Type) {
     this._items.push(item);
   }
@@ -21,11 +26,6 @@ class TestGenericClass<Type> {
   remove(item: Type) {
     const index = this._items.findIndex((i) => i === item);
     this._items.slice(index, 1);
-  }
-
-  get items() {
-    console.log(this._items);
-    return this._items;
   }
 }
 
@@ -43,9 +43,17 @@ function getId<CustomType>(arg: CustomType): CustomType {
   return arg;
 }
 
-let id = getId(true);
+let id: boolean = getId(true);
 
-function genericForArray<ArrayType>(arg: ArrayType[]) {
+interface ILengthContentable {
+  length: number;
+}
+
+function genericForArrayInterface<Type extends ILengthContentable>(arg: Type) {
+  return arg[arg.length - 1];
+}
+
+function genericForArrayType<T>(arg: T[]) {
   return arg[arg.length - 1];
 }
 
@@ -53,8 +61,8 @@ function genericError<T>(arg: T[]): T {
   return arg[arg.length - 1];
 }
 
-let customArray1 = genericForArray([1, 2, 3, 4]);
-let customArray2 = genericForArray(["1", "2", "3", "4"]);
+let customArray1 = genericForArrayInterface([1, 2, 3, 4]);
+let customArray2 = genericForArrayType(["1", "2", "3", "4"]);
 
 interface Person<Type> {
   [key: string]: Type;
@@ -262,52 +270,57 @@ let myObjForTest = { a: 1, b: 2, c: 3, d: 4 };
 class Point<Type> {
   x: Type;
   y: Type;
+
   constructor(x: Type, y: Type) {
     this.x = x;
     this.y = y;
   }
+
   set _x(val: Type) {
-    this.x = val
+    this.x = val;
   }
 }
 
 const pt = new Point<number>(3, 4);
 
-pt._x = 200
+pt._x = 200;
 
-interface Pingable {
-  ping(): void
-}
-
-class Sonar implements Pingable, LengthConstraint {
-  length!: number
-  ping() {}
-}
-
-class Boll implements Sonar {
-  length!: number
-  ping() {
-  }
-}
-
-class Base {
-  private static greeting = 'Special greeting from the base class'
-  static sayGreeting() {
-    console.log(Base.greeting)
-  }
-  greet() {
-    console.log("Hello, world!");
-  }
-}
-
-class Derived extends Base {
-  greet(name?: string) {
-    if (name === undefined) {
-      super.greet();
-    } else {
-      console.log(`Hello, ${name.toUpperCase()}`);
-    }
-  }
-}
-
-Base.sayGreeting()
+// interface Pingable {
+//   ping(): void;
+// }
+//
+// class Sonar implements Pingable, LengthConstraint {
+//   length!: number;
+//
+//   ping() {}
+// }
+//
+// class Boll implements Sonar {
+//   length!: number;
+//
+//   ping() {}
+// }
+//
+// class Base {
+//   private static greeting = "Special greeting from the base class";
+//
+//   static sayGreeting() {
+//     console.log(Base.greeting);
+//   }
+//
+//   greet() {
+//     console.log("Hello, world!");
+//   }
+// }
+//
+// class Derived extends Base {
+//   greet(name?: string) {
+//     if (name === undefined) {
+//       super.greet();
+//     } else {
+//       console.log(`Hello, ${name.toUpperCase()}`);
+//     }
+//   }
+// }
+//
+// Base.sayGreeting();

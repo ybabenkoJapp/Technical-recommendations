@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { ref } from "vue";
-import axios from "axios";
+import { computed, onMounted, ref } from "vue";
 import TeleportModal from "@/modals/TeleportModal.vue";
 import CreatePost from "@/components/CreatePost.vue";
 import Card from "@/components/Card.vue";
+import { usePostStore } from "@/stores/posts";
 
 interface IPost {
   userId: number;
@@ -12,15 +12,10 @@ interface IPost {
   body: string;
 }
 
+const store = usePostStore();
+
 // Create array of received posts, mutate post found by ID
-const posts = ref<IPost[] | null>(null);
-
-axios("posts").then((res) => (posts.value = res.data as IPost[]));
-
-function pushPost(emittedValue: unknown) {
-  console.log("emittedValue: ", emittedValue);
-  if (posts.value && emittedValue) posts.value.unshift(emittedValue as IPost);
-}
+const posts = computed<IPost[]>(() => store.getPosts);
 
 // TODO Implement emulation of creating and editing post
 
@@ -40,6 +35,10 @@ fetch("https://jsonplaceholder.typicode.com/posts/1", {
   .then((json) => console.log(json));
 
 const showModal = ref(false);
+
+onMounted(() => {
+  store.fetchPosts();
+});
 </script>
 
 <template>

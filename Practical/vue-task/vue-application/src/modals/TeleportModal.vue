@@ -1,19 +1,10 @@
 <script lang="ts" setup>
-import { ref, watch } from "vue";
-
 const props = defineProps<{ show: boolean }>();
-
-const showModal = ref(false);
-
-watch(
-  () => props.show,
-  (show) => (showModal.value = show),
-);
 </script>
 
 <template>
   <Teleport to="body">
-    <div v-if="showModal" class="modal-wrapper">
+    <div v-if="show" class="modal-wrapper">
       <div class="inner d-flex justify-center">
         <div
           ref="modal"
@@ -23,7 +14,7 @@ watch(
         >
           <button
             class="close-btn position-absolute"
-            @click="showModal = !showModal"
+            @click="$emit('update:show', false)"
           >
             <span class="close">&times;</span>
           </button>

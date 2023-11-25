@@ -46,7 +46,10 @@ const showModal = ref(false);
   <section class="posts-view">
     <header>
       <button @click="() => (showModal = !showModal)">Create post</button>
-      <TeleportModal :show="showModal">
+      <TeleportModal
+        :show="showModal"
+        @update:show="(val) => (showModal = val)"
+      >
         <CreatePost />
       </TeleportModal>
     </header>

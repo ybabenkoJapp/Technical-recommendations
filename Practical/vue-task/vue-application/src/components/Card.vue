@@ -13,7 +13,7 @@ const showModal = ref(false);
   <v-card class="mx-auto my-5 position-relative" width="1000">
     <template v-slot:title> {{ title }}</template>
     <button @click="showModal = !showModal">Edit post</button>
-    <TeleportModal :show="showModal">
+    <TeleportModal :show="showModal" @update:show="(val) => (showModal = val)">
       <EditPost />
     </TeleportModal>
     <v-card-text>

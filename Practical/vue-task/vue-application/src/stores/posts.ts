@@ -24,7 +24,7 @@ export const usePostStore = defineStore("post", {
     async addPost(postData: IPost) {
       try {
         const response = await axios.post("posts", postData);
-        if (response.status === 200) {
+        if (response.status === 200 || response.status === 201) {
           this.posts.unshift(response.data);
         }
       } catch (e) {

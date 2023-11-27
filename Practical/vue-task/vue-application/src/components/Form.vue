@@ -1,38 +1,21 @@
 <script lang="ts" setup>
 import { ref } from "vue";
-import axios from "axios";
+import { usePostStore } from "@/stores/posts";
 
+const postStore = usePostStore();
 const title = ref("");
 const postBody = ref("");
 
-const emit = defineEmits<{
-  (
-    e: "put-post",
-    value: {
-      userId: number;
-      id: number;
-      title: string;
-      body: string;
-    },
-  ): void;
-}>();
-
 const submitForm = () => {
-  axios
-    .post("put", {
-      title: title.value,
-      body: postBody.value,
-      userId: 1,
-      config: {
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      },
-    })
-    .then((json) => {
-      emit("put-post", json.data);
-    })
-    .catch((error) => console.error(error));
+  const postData = {
+    title: title.value,
+    body: postBody.value,
+    userId: 1,
+    id: 101,
+  };
+  postStore.addPost(postData);
+  title.value = "";
+  postBody.value = "";
 };
 </script>
 

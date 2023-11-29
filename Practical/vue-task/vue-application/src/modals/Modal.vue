@@ -1,72 +1,59 @@
 <script lang="ts" setup>
-import { ref } from "vue";
-
-const props = defineProps<{ block: { name: string } }>();
-const emit = defineEmits(["pass-post"]);
-
-function pushPost(emittedValue: unknown) {
-  console.log("emittedValue: ", emittedValue);
-  emit("pass-post", emittedValue);
-}
-
-const open = ref(false);
+const props = defineProps<{ show: boolean }>();
 </script>
 
 <template>
-  <button @click="open = true">{{ block?.name }}</button>
-  <div v-if="open" class="modal">
-    <div class="modal-content">
-      <button class="close-btn" @click="open = false">
-        <span class="close">&times;</span>
-      </button>
-      <!--      <CreatePost @push-post="pushPost" />-->
-      <slot></slot>
+  <Teleport to="body">
+    <div v-if="show" class="modal-wrapper">
+      <div class="inner d-flex justify-center">
+        <div
+          ref="modal"
+          aria-modal="true"
+          class="modal w-50 rounded-xl overflow-hidden bg-white position-relative"
+          role="dialog"
+        >
+          <button
+            class="close-btn position-absolute"
+            @click="$emit('update:show', false)"
+          >
+            <v-icon
+              class="close"
+              color="red"
+              icon="mdi-close-circle-outline"
+              size="x-large"
+            ></v-icon>
+          </button>
+          <slot />
+        </div>
+      </div>
     </div>
-  </div>
+  </Teleport>
 </template>
+
 <style scoped>
-.modal {
+.modal-wrapper {
   position: fixed;
-  left: 0;
-  top: 0;
-
-  z-index: 5000;
-
-  width: 100vw;
-  height: 100vh;
-
-  background: rgba(0, 0, 0, 0.2);
-
-  display: grid;
-  place-items: center;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.8);
+  overflow-y: auto;
+  inset: 0;
 }
 
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
-  width: 50%; /* Could be more or less, depending on screen size */
-  position: relative;
+.inner {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-/* The Close Button */
+.modal {
+  padding: 32px;
+  height: max-content;
+}
+
 .close-btn {
-  position: absolute;
-  right: 40px;
-  top: 67px;
-}
-
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
+  top: 32px;
+  right: 32px;
 }
 </style>

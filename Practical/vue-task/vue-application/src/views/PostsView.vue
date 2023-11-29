@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from "vue";
-import TeleportModal from "@/modals/TeleportModal.vue";
+import Modal from "@/modals/Modal.vue";
 import CreatePost from "@/components/CreatePost.vue";
 import Card from "@/components/Card.vue";
 import { usePostStore } from "@/stores/posts";
@@ -44,13 +44,16 @@ onMounted(() => {
 <template>
   <section class="posts-view">
     <header>
-      <button @click="() => (showModal = !showModal)">Create post</button>
-      <TeleportModal
-        :show="showModal"
-        @update:show="(val) => (showModal = val)"
-      >
+      <v-btn
+        density="comfortable"
+        elevated
+        variant="elevated"
+        @click="() => (showModal = !showModal)"
+        >Create post
+      </v-btn>
+      <Modal :show="showModal" @update:show="(val) => (showModal = val)">
         <CreatePost />
-      </TeleportModal>
+      </Modal>
     </header>
     <Card
       v-for="item in posts"

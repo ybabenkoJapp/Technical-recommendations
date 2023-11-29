@@ -20,6 +20,12 @@ export const routes = [
     name: "posts",
     component: PostsView,
   },
+  // TODO add dynamic post
+  // {
+  //   path: "/posts/:id",
+  //   name: "posts",
+  //   component: PostView,
+  // },
   {
     path: "/albums",
     name: "albums",

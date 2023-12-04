@@ -3,6 +3,7 @@ import HomeView from "../views/HomeView.vue";
 import PostsView from "@/views/PostsView.vue";
 import AlbumsView from "@/views/AlbumsView.vue";
 import PhotosView from "@/views/PhotosView.vue";
+import PostView from "@/views/PostView.vue";
 
 export const routes = [
   {
@@ -21,11 +22,11 @@ export const routes = [
     component: PostsView,
   },
   // TODO add dynamic post
-  // {
-  //   path: "/posts/:id",
-  //   name: "posts",
-  //   component: PostView,
-  // },
+  {
+    path: "/posts/:id",
+    name: "post",
+    component: PostView,
+  },
   {
     path: "/albums",
     name: "albums",

@@ -15,10 +15,5 @@ const links = routes.map((link) => ({ title: link.name, route: link.path }));
         link
       ></v-list-item>
     </v-list>
-
-    <!--    <v-list-item link title="Dashboard" to="/dashboard"></v-list-item>-->
-    <!--    <v-list-item link title="Posts" to="/posts"></v-list-item>-->
-    <!--    <v-list-item link title="Albums" to="/albums"></v-list-item>-->
-    <!--    <v-list-item link title="Photos" to="/photos"></v-list-item>-->
   </v-navigation-drawer>
 </template>

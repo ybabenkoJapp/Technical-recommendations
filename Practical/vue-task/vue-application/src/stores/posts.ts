@@ -1,12 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-
-interface IPost {
-  userId: number;
-  id: number;
-  title: string;
-  body: string;
-}
+import type { IPost } from "@/app-types/IPost";
 
 export const usePostStore = defineStore("post", {
   state: () => ({

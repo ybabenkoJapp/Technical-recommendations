@@ -3,15 +3,17 @@ import Modal from "@/modals/Modal.vue";
 import EditPost from "@/components/EditPost.vue";
 import { ref } from "vue";
 
-const props = defineProps<{ title: string; body: string }>();
+const props = defineProps<{ title: string; body: string; id: number }>();
 
-const { title, body } = props;
+const { title, body, id } = props;
 const showModal = ref(false);
 </script>
 
 <template>
   <v-card class="mx-auto my-5 position-relative" width="1000">
-    <template v-slot:title> {{ title }}</template>
+    <v-list-item :to="{ name: 'post', params: { id: id } }" link title="Post">
+      <template v-slot:title> {{ title }}</template>
+    </v-list-item>
     <Modal :show="showModal" @update:show="(val) => (showModal = val)">
       <EditPost />
     </Modal>
@@ -19,7 +21,7 @@ const showModal = ref(false);
       <p>{{ body }}</p>
       <br />
     </v-card-text>
-    <v-row align="center" class="pa-0 my-2 mx-12" justify="end">
+    <v-card-actions>
       <v-btn
         class="my-2 mr-2"
         density="comfortable"
@@ -34,7 +36,7 @@ const showModal = ref(false);
         @click="() => (showModal = !showModal)"
         >Delete
       </v-btn>
-    </v-row>
+    </v-card-actions>
   </v-card>
 </template>
 

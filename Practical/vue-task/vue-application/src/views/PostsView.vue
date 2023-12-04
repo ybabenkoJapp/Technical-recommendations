@@ -3,14 +3,8 @@ import { computed, onMounted, ref } from "vue";
 import Modal from "@/modals/Modal.vue";
 import CreatePost from "@/components/CreatePost.vue";
 import Card from "@/components/Card.vue";
-import { usePostStore } from "@/stores/posts";
-
-interface IPost {
-  userId: number;
-  id: number;
-  title: string;
-  body: string;
-}
+import { usePostStore } from "@/stores";
+import type { IPost } from "@/app-types/IPost";
 
 const store = usePostStore();
 
@@ -18,21 +12,21 @@ const store = usePostStore();
 const posts = computed<IPost[]>(() => store.getPosts);
 
 // TODO Implement emulation of creating and editing post
-
-fetch("https://jsonplaceholder.typicode.com/posts/1", {
-  method: "PUT",
-  body: JSON.stringify({
-    id: 1,
-    title: "foo",
-    body: "bar",
-    userId: 1,
-  }),
-  headers: {
-    "Content-type": "application/json; charset=UTF-8",
-  },
-})
-  .then((response) => response.json())
-  .then((json) => console.log(json));
+//
+// fetch("https://jsonplaceholder.typicode.com/posts/1", {
+//   method: "PUT",
+//   body: JSON.stringify({
+//     id: 1,
+//     title: "foo",
+//     body: "bar",
+//     userId: 1,
+//   }),
+//   headers: {
+//     "Content-type": "application/json; charset=UTF-8",
+//   },
+// })
+//   .then((response) => response.json())
+//   .then((json) => console.log(json));
 
 const showModal = ref(false);
 
@@ -58,6 +52,7 @@ onMounted(() => {
     <Card
       v-for="item in posts"
       v-if="posts"
+      :id="item.id"
       :key="item.id"
       :body="item.body"
       :title="item.title"

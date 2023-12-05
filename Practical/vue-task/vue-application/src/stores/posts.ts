@@ -25,5 +25,17 @@ export const usePostStore = defineStore("post", {
         console.log(e);
       }
     },
+    async deletePost(postId: number) {
+      try {
+        const response = await axios.delete(`posts/${postId}`);
+        if (response.status === 200) {
+          this.posts = this.posts.filter((post) => post.id !== postId);
+        } else {
+          console.error(`Unsuccessful delete. Status: ${response.status}`);
+        }
+      } catch (error) {
+        console.error("Error deleting post:", error);
+      }
+    },
   },
 });

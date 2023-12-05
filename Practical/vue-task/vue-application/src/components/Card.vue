@@ -2,9 +2,10 @@
 import Modal from "@/modals/Modal.vue";
 import EditPost from "@/components/EditPost.vue";
 import { ref } from "vue";
+import { usePostStore } from "@/stores";
 
 const props = defineProps<{ title: string; body: string; id: number }>();
-
+const storage = usePostStore();
 const { title, body, id } = props;
 const showModal = ref(false);
 </script>
@@ -33,7 +34,7 @@ const showModal = ref(false);
         color="error"
         density="comfortable"
         variant="elevated"
-        @click="() => (showModal = !showModal)"
+        @click="() => storage.deletePost(id)"
         >Delete
       </v-btn>
     </v-card-actions>

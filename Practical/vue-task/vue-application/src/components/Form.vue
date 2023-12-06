@@ -1,22 +1,32 @@
 <script lang="ts" setup>
-import { ref } from "vue";
-import { usePostStore } from "@/stores/posts";
+import { onMounted, ref } from "vue";
+import type { IPost } from "@/app-types/IPost";
 
-const postStore = usePostStore();
 const title = ref("");
 const postBody = ref("");
+const emit = defineEmits(["submit"]);
+const props = defineProps<{ initialData?: IPost }>();
 
 const submitForm = () => {
   const postData = {
     title: title.value,
     body: postBody.value,
-    userId: 1,
-    id: 101,
   };
-  postStore.addPost(postData);
+  emit("submit", postData);
+  clearForm();
+};
+
+const clearForm = () => {
   title.value = "";
   postBody.value = "";
 };
+
+onMounted(() => {
+  if (props.initialData) {
+    title.value = props.initialData?.title || "";
+    postBody.value = props.initialData?.body || "";
+  }
+});
 </script>
 
 <template>

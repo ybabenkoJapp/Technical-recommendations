@@ -1,42 +1,26 @@
 <script lang="ts" setup>
 import Form from "@/components/Form.vue";
+import { usePostStore } from "@/stores";
+import type { IPost } from "@/app-types/IPost";
 
-// const title = ref("");
-// const postBody = ref("");
-// const emit = defineEmits<{
-//   (
-//     e: "put-post",
-//     value: {
-//       userId: number;
-//       id: number;
-//       title: string;
-//       body: string;
-//     },
-//   ): void;
-// }>();
-// const submitForm = () => {
-//   axios
-//     .post("put", {
-//       title: title.value,
-//       body: postBody.value,
-//       userId: 1,
-//       config: {
-//         headers: {
-//           "Content-type": "application/json; charset=UTF-8",
-//         },
-//       },
-//     })
-//     .then((json) => {
-//       emit("put-post", json.data);
-//     })
-//     .catch((error) => console.error(error));
-// };
+const storage = usePostStore();
+
+const postStore = usePostStore();
+const props = defineProps<{ postId: number }>();
+const emit = defineEmits(["updateShowModal"]);
+const submitForm = (postData: IPost) => {
+  emit("updateShowModal", false);
+  postStore.updatePost(props.postId, postData);
+};
 </script>
 
 <template>
   <div class="post-container">
     <h2 class="post-title">Edit Post</h2>
-    <Form />
+    <Form
+      :initialData="storage.getPostData(props.postId)"
+      @submit="submitForm"
+    />
   </div>
 </template>
 

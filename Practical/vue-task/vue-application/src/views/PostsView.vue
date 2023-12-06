@@ -46,7 +46,7 @@ onMounted(() => {
         >Create post
       </v-btn>
       <Modal :show="showModal" @update:show="(val) => (showModal = val)">
-        <CreatePost />
+        <CreatePost @updateShowModal="(value) => (showModal = value)" />
       </Modal>
     </header>
     <Card

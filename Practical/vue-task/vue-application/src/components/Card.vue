@@ -16,7 +16,10 @@ const showModal = ref(false);
       <template v-slot:title> {{ title }}</template>
     </v-list-item>
     <Modal :show="showModal" @update:show="(val) => (showModal = val)">
-      <EditPost />
+      <EditPost
+        :postId="id"
+        @updateShowModal="(value) => (showModal = value)"
+      />
     </Modal>
     <v-card-text>
       <p>{{ body }}</p>

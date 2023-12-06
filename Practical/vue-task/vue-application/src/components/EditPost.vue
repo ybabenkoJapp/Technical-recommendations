@@ -3,8 +3,6 @@ import Form from "@/components/Form.vue";
 import { usePostStore } from "@/stores";
 import type { IPost } from "@/app-types/IPost";
 
-const storage = usePostStore();
-
 const postStore = usePostStore();
 const props = defineProps<{ postId: number }>();
 const emit = defineEmits(["updateShowModal"]);
@@ -18,7 +16,7 @@ const submitForm = (postData: IPost) => {
   <div class="post-container">
     <h2 class="post-title">Edit Post</h2>
     <Form
-      :initialData="storage.getPostData(props.postId)"
+      :initialData="postStore.getPostData(props.postId)"
       @submit="submitForm"
     />
   </div>

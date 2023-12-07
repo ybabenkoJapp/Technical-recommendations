@@ -1,20 +1,14 @@
 <script lang="ts" setup>
-import { ref } from "vue";
-import axios from "axios";
+import { computed, onMounted } from "vue";
+import { usePhotosStore } from "@/stores";
+import type { IPhoto } from "@/app-types/IPhoto";
 
-interface IPhotos {
-  albumId: number;
-  id: number;
-  title: string;
-  url: string;
-  thumbnailUrl: string;
-}
+const photosStore = usePhotosStore();
 
 // Create array of received photos, mutate photo found by ID
-const photos = ref<IPhotos[] | null>(null);
+const photos = computed<IPhoto[]>(() => photosStore.getPosts);
 
-axios("photos").then((res) => (photos.value = res.data as IPhotos[]));
-
+onMounted(async () => await photosStore.fetchPhotos());
 // TODO Implement emulation of creating and editing photo
 </script>
 

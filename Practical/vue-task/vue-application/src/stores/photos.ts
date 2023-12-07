@@ -26,5 +26,17 @@ export const usePhotosStore = defineStore("photo", {
         console.error("[Error happened during fetching photos]", error);
       }
     },
+    async deletePhoto(photoId: number) {
+      try {
+        const response = await axios.delete(`photos/${photoId}`);
+        if (response.status === 200) {
+          this.photos = this.photos.filter((photo) => photo.id !== photoId);
+        } else {
+          console.error(`Unsuccessful delete. Status: ${response.status}`);
+        }
+      } catch (error) {
+        console.error("Error deleting post:", error);
+      }
+    },
   },
 });

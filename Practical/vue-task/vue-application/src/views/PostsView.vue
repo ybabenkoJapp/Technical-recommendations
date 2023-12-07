@@ -11,23 +11,6 @@ const store = usePostStore();
 // Create array of received posts, mutate post found by ID
 const posts = computed<IPost[]>(() => store.getPosts);
 
-// TODO Implement emulation of creating and editing post
-//
-// fetch("https://jsonplaceholder.typicode.com/posts/1", {
-//   method: "PUT",
-//   body: JSON.stringify({
-//     id: 1,
-//     title: "foo",
-//     body: "bar",
-//     userId: 1,
-//   }),
-//   headers: {
-//     "Content-type": "application/json; charset=UTF-8",
-//   },
-// })
-//   .then((response) => response.json())
-//   .then((json) => console.log(json));
-
 const showModal = ref(false);
 
 onMounted(() => {
@@ -40,7 +23,6 @@ onMounted(() => {
     <header>
       <v-btn
         density="comfortable"
-        elevated
         variant="elevated"
         @click="() => (showModal = !showModal)"
         >Create post

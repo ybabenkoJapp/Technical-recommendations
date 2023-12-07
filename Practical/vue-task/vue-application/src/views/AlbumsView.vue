@@ -6,7 +6,7 @@ import { onMounted } from "vue";
 const albumsStore = useAlbumStore();
 
 const { albums } = storeToRefs(albumsStore);
-onMounted(async () => await albumsStore.fetchAlbums());
+onMounted(() => albumsStore.fetchAlbums());
 </script>
 
 <template>

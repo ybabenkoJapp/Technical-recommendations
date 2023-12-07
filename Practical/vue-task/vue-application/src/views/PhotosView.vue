@@ -8,7 +8,7 @@ const photosStore = usePhotosStore();
 // Create array of received photos, mutate photo found by ID
 const photos = computed<IPhoto[]>(() => photosStore.getPosts);
 
-onMounted(async () => await photosStore.fetchPhotos());
+onMounted(() => photosStore.fetchPhotos());
 // TODO Implement emulation of creating and editing photo
 </script>
 

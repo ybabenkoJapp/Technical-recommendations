@@ -21,8 +21,8 @@ export const usePostStore = defineStore("post", {
         if (response.status === 200 || response.status === 201) {
           this.posts.unshift(response.data);
         }
-      } catch (e) {
-        console.log(e);
+      } catch (error) {
+        console.error("Error adding post:", error);
       }
     },
     async deletePost(postId: number) {
@@ -36,6 +36,25 @@ export const usePostStore = defineStore("post", {
       } catch (error) {
         console.error("Error deleting post:", error);
       }
+    },
+
+    async updatePost(postId: number, body: IPost) {
+      try {
+        const response = await axios.put(`posts/${postId}`, body);
+
+        if (response.status === 200) {
+          const index = this.posts.findIndex((post) => post.id === postId);
+          if (index !== -1) {
+            this.posts.splice(index, index + 1);
+            setTimeout(() => (this.posts[index] = response.data), 100);
+          }
+        }
+      } catch (error) {
+        console.error("Error updating post:", error);
+      }
+    },
+    getPostData(postId: number) {
+      return this.posts.find((post) => post.id === postId);
     },
   },
 });

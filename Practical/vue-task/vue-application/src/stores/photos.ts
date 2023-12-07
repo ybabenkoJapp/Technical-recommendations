@@ -12,9 +12,12 @@ export const usePhotosStore = defineStore("photo", {
   actions: {
     async fetchPhotos() {
       try {
-        const response = await axios("photos");
+        const response = await axios("photos", {
+          params: {
+            _limit: 99,
+          },
+        });
         if (response.status === 200) {
-          console.log(response);
           this.photos = response.data;
         } else {
           return this.photos;

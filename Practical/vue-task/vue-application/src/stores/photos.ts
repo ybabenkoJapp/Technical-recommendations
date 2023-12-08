@@ -19,6 +19,7 @@ export const usePhotosStore = defineStore("photo", {
         });
         if (response.status === 200) {
           this.photos = response.data;
+          this.saveToSessionStorage();
         } else {
           return this.photos;
         }
@@ -31,6 +32,7 @@ export const usePhotosStore = defineStore("photo", {
         const response = await axios.delete(`photos/${photoId}`);
         if (response.status === 200) {
           this.photos = this.photos.filter((photo) => photo.id !== photoId);
+          this.saveToSessionStorage();
         } else {
           console.error(`Unsuccessful delete. Status: ${response.status}`);
         }
@@ -45,13 +47,16 @@ export const usePhotosStore = defineStore("photo", {
         if (response.status === 200) {
           const index = this.photos.findIndex((photo) => photo.id === photoId);
           if (index !== -1) {
-            this.photos.splice(index, index + 1);
-            setTimeout(() => (this.photos[index] = response.data), 10);
+            this.photos[index] = response.data;
+            this.saveToSessionStorage();
           }
         }
       } catch (error) {
         console.error("Error updating photo:", error);
       }
+    },
+    saveToSessionStorage() {
+      sessionStorage.setItem("photos", JSON.stringify(this.photos));
     },
   },
 });

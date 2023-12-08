@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { usePhotosStore } from "@/stores";
 import type { IEditePhoto, IPhoto } from "@/app-types/IPhoto";
 
@@ -23,6 +23,11 @@ onMounted(() => {
     fetchPhotos();
   }
 });
+
+watch(
+  () => photosStore.getPhotos,
+  (newPosts) => (photos.value = newPosts),
+);
 
 function editPhoto(photo: IEditePhoto) {
   editedPhoto.value = { ...photo };

@@ -47,11 +47,8 @@ export const usePhotosStore = defineStore("photo", {
         if (response.status === 200) {
           const index = this.photos.findIndex((photo) => photo.id === photoId);
           if (index !== -1) {
-            this.photos.splice(index, index + 1);
-            setTimeout(() => {
-              this.photos[index] = response.data;
-              this.saveToSessionStorage();
-            }, 100);
+            this.photos.splice(index, 1, response.data);
+            this.saveToSessionStorage();
           }
         }
       } catch (error) {

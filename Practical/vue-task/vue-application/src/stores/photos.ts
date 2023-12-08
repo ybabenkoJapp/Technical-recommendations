@@ -35,7 +35,22 @@ export const usePhotosStore = defineStore("photo", {
           console.error(`Unsuccessful delete. Status: ${response.status}`);
         }
       } catch (error) {
-        console.error("Error deleting post:", error);
+        console.error("Error deleting photo:", error);
+      }
+    },
+    async updatePhoto(photoId: number, body: IPhoto) {
+      try {
+        const response = await axios.put(`photos/${photoId}`, body);
+
+        if (response.status === 200) {
+          const index = this.photos.findIndex((photo) => photo.id === photoId);
+          if (index !== -1) {
+            this.photos.splice(index, index + 1);
+            setTimeout(() => (this.photos[index] = response.data), 10);
+          }
+        }
+      } catch (error) {
+        console.error("Error updating photo:", error);
       }
     },
   },

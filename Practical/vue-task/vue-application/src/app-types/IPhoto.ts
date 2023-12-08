@@ -5,3 +5,11 @@ export interface IPhoto {
   url: string;
   thumbnailUrl: string;
 }
+
+type nullAble<Type> = Type | null;
+
+export interface IEditePhoto {
+  id: nullAble<number>;
+  title: string;
+  thumbnailUrl: string | ArrayBuffer;
+}

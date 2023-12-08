@@ -7,7 +7,7 @@ export const usePhotosStore = defineStore("photo", {
     photos: [] as IPhoto[],
   }),
   getters: {
-    getPosts: (state) => state.photos,
+    getPhotos: (state) => state.photos,
   },
   actions: {
     async fetchPhotos() {

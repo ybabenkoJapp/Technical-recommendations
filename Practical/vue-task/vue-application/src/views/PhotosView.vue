@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import { usePhotosStore } from "@/stores";
 import type { IPhoto } from "@/app-types/IPhoto";
 
@@ -82,7 +82,14 @@ function saveEdit() {
   <section class="photos-view">
     <v-container>
       <v-row>
-        <v-col v-for="photo in photos" :key="photo.id" cols="12" md="4" sm="6">
+        <v-col
+          v-for="photo in photos"
+          v-if="photos.length"
+          :key="photo.id"
+          cols="12"
+          md="4"
+          sm="6"
+        >
           <v-card>
             <v-img :alt="photo.title" :src="photo.thumbnailUrl"></v-img>
             <v-card-title>{{ photo.title }}</v-card-title>

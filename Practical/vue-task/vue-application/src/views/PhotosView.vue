@@ -58,13 +58,17 @@ function clearData() {
   };
 }
 
-function saveEdit() {
+async function saveEdit() {
   if (newImage.value) {
     editedPhoto.value.thumbnailUrl = newImage.value;
   }
 
   // Call the updatePhoto method with the edited photo data
-  updatePhoto(editedPhoto.value.id as number, editedPhoto.value as IPhoto);
+  await updatePhoto(
+    editedPhoto.value.id as number,
+    editedPhoto.value as IPhoto,
+  );
+  photos.value = photosStore.getPhotos;
   // Clear data
   clearData();
   dialog.value = false;
@@ -84,7 +88,12 @@ function saveEdit() {
           sm="6"
         >
           <v-card>
-            <v-img :alt="photo.title" :src="photo.thumbnailUrl"></v-img>
+            <v-img
+              :alt="photo.title"
+              :src="photo.thumbnailUrl"
+              aspect-ratio="1"
+              cover
+            ></v-img>
             <v-card-title>{{ photo.title }}</v-card-title>
             <v-card-actions>
               <v-btn

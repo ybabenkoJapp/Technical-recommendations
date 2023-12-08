@@ -8,7 +8,8 @@ const photosStore = usePhotosStore();
 const { deletePhoto, updatePhoto, fetchPhotos } = photosStore;
 
 // Create array of received photos, mutate photo found by ID
-const photos = computed<IPhoto[]>(() => photosStore.getPosts);
+const photos = ref([] as IPhoto[]);
+
 type nullAble<Type> = Type | null;
 
 interface IEditePhoto {
@@ -25,7 +26,15 @@ const editedPhoto = ref<IEditePhoto>({
 const newImage = ref<string | ArrayBuffer | null>();
 const dialog = ref(false);
 
-onMounted(() => fetchPhotos());
+onMounted(() => {
+  // call data from sessionStorage
+  const sessionPhotos = sessionStorage.getItem("photos");
+  if (sessionPhotos) {
+    photos.value = JSON.parse(sessionPhotos);
+  } else {
+    fetchPhotos();
+  }
+});
 
 function editPhoto(photo: IEditePhoto) {
   editedPhoto.value = { ...photo };

@@ -1,23 +1,11 @@
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 import { usePhotosStore } from "@/stores";
-import type { IPhoto } from "@/app-types/IPhoto";
+import type { IEditePhoto, IPhoto } from "@/app-types/IPhoto";
 
 const photosStore = usePhotosStore();
-
 const { deletePhoto, updatePhoto, fetchPhotos } = photosStore;
-
-// Create array of received photos, mutate photo found by ID
 const photos = ref([] as IPhoto[]);
-
-type nullAble<Type> = Type | null;
-
-interface IEditePhoto {
-  id: nullAble<number>;
-  title: string;
-  thumbnailUrl: string | ArrayBuffer;
-}
-
 const editedPhoto = ref<IEditePhoto>({
   id: null,
   title: "",

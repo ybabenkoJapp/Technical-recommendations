@@ -77,7 +77,7 @@ const setPasswordError = (message: string) => {
         <v-card>
           <v-card-title class="text-h5">Login</v-card-title>
           <v-card-text>
-            <v-form @submit="login">
+            <v-form @submit.prevent="login">
               <v-text-field
                 v-model="username"
                 :error-messages="usernameErrorMessages"

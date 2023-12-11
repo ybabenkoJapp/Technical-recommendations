@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import DashboardView from "@/views/DashboardView.vue";
+import UserPanel from "@/components/UserPanel.vue";
 // TODO 1. Implement emulation of creating and editing post / photo in the modal + form + validation (fields should be required)
 //          - Create array of received posts and photos, mutate post and photo found by ID
 //          - Add new Post and Photo to the beginning of the array
@@ -14,6 +15,7 @@ import DashboardView from "@/views/DashboardView.vue";
     <DashboardView />
     <main>
       <RouterView />
+      <UserPanel />
     </main>
   </v-app>
 </template>

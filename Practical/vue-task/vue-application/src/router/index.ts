@@ -1,5 +1,5 @@
-import type { NavigationGuardNext } from "vue-router";
 import { createRouter, createWebHistory } from "vue-router";
+import type { NavigationGuardNext, RouteLocationNormalized } from " vue-router";
 import HomeView from "../views/HomeView.vue";
 import PostsView from "@/views/PostsView.vue";
 import AlbumsView from "@/views/AlbumsView.vue";
@@ -47,20 +47,13 @@ export const routes = [
   {
     path: "/users",
     name: "users",
-    beforeEnter: function (next: NavigationGuardNext) {
-      const authStore = useAuthStore();
-      if (authStore.getCurrentUser === "editor") {
-        next();
-      } else {
-        return { name: "home" };
-      }
-    },
-    meta: { requiresAuth: true },
+    beforeEnter: userRouteGuard,
+    meta: { requiresAuth: true, editorOnly: true },
   },
 ];
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory("my-vue-project"), // import.meta.env.BASE_URL
   routes,
 });
 
@@ -84,5 +77,18 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
+
+function userRouteGuard(
+  to: RouteLocationNormalized,
+  from: RouteLocationNormalized,
+  next: NavigationGuardNext,
+) {
+  const authStore = useAuthStore();
+  if (authStore.getCurrentUser === "editor") {
+    next();
+  } else {
+    next({ name: "home" });
+  }
+}
 
 export default router;

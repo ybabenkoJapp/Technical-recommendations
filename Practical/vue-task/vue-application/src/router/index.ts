@@ -1,3 +1,4 @@
+import type { NavigationGuardNext } from "vue-router";
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import PostsView from "@/views/PostsView.vue";
@@ -46,6 +47,14 @@ export const routes = [
   {
     path: "/users",
     name: "users",
+    beforeEnter: function (next: NavigationGuardNext) {
+      const authStore = useAuthStore();
+      if (authStore.getCurrentUser === "editor") {
+        next();
+      } else {
+        return { name: "home" };
+      }
+    },
     meta: { requiresAuth: true },
   },
 ];

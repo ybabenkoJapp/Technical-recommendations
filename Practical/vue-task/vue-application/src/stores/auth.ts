@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import { useUserStore } from "@/stores/users";
+import type { IUser } from "@/app-types/IUser";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -12,12 +14,14 @@ export const useAuthStore = defineStore("auth", {
   },
   actions: {
     async login(username: string) {
+      const userStore = useUserStore();
       try {
-        const response = await axios(`users/?username=${username}`);
+        const response = await axios<IUser[]>(`users/?username=${username}`);
         if (
           response.data?.length > 0 &&
           response.data?.[0].username === username
         ) {
+          userStore.user = response.data?.[0];
           this.currentUser = username;
           this._isAuthenticated = true;
         } else {

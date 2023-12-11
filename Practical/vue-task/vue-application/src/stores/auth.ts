@@ -39,6 +39,8 @@ export const useAuthStore = defineStore("auth", {
       this._isAuthenticated = value;
     },
     logout() {
+      const userStore = useUserStore();
+      userStore.user = {} as IUser;
       this.currentUser = "";
       this._isAuthenticated = false;
     },

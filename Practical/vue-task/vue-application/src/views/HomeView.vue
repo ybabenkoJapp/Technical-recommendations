@@ -1,5 +1,18 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { useUserStore } from "@/stores";
+
+const currentUser = useUserStore();
+</script>
 
 <template>
-  <h2>This is a home page</h2>
+  <div>
+    <h2>This is a home page</h2>
+    <pre>Current user data: {{ currentUser.user }}</pre>
+  </div>
 </template>
+
+<style scoped>
+div {
+  margin-left: 400px;
+}
+</style>

@@ -1,14 +1,19 @@
-import { createRouter, createWebHistory } from "vue-router";
-import type { NavigationGuardNext, RouteLocationNormalized } from " vue-router";
-import HomeView from "../views/HomeView.vue";
+import type {
+  NavigationGuardNext,
+  RouteLocationNormalized,
+  RouteRecordRaw,
+} from "vue-router";
+import * as VueRouter from "vue-router";
+import { useAuthStore } from "@/stores";
+import HomeView from "@/views/HomeView.vue";
+import Login from "@/views/Login.vue";
 import PostsView from "@/views/PostsView.vue";
+import PostView from "@/views/PostView.vue";
 import AlbumsView from "@/views/AlbumsView.vue";
 import PhotosView from "@/views/PhotosView.vue";
-import PostView from "@/views/PostView.vue";
-import { useAuthStore } from "@/stores";
-import Login from "@/views/Login.vue";
 
-export const routes = [
+export const routes: RouteRecordRaw[] = [];
+routes.push(
   {
     path: "/",
     name: "home",
@@ -25,7 +30,6 @@ export const routes = [
     component: PostsView,
     meta: { requiresAuth: true },
   },
-  // TODO add dynamic post
   {
     path: "/posts/:id",
     name: "post",
@@ -48,12 +52,12 @@ export const routes = [
     path: "/users",
     name: "users",
     beforeEnter: userRouteGuard,
-    meta: { requiresAuth: true, editorOnly: true },
+    meta: { requiresAuth: true },
   },
-];
+);
 
-const router = createRouter({
-  history: createWebHistory("my-vue-project"), // import.meta.env.BASE_URL
+const router = VueRouter.createRouter({
+  history: VueRouter.createWebHistory(import.meta.env.VITE_BASE_URL), // import.meta.env.BASE_URL
   routes,
 });
 

@@ -43,9 +43,3 @@ onMounted(() => {
     />
   </section>
 </template>
-
-<style>
-.posts-view {
-  padding-left: 200px;
-}
-</style>

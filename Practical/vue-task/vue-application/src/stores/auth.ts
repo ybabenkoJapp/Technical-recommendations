@@ -13,6 +13,12 @@ export const useAuthStore = defineStore("auth", {
     isAuthenticated: (state) => state._isAuthenticated,
   },
   actions: {
+    setCurrentUser(username: string) {
+      this.currentUser = username;
+    },
+    setAuthenticated(value: boolean) {
+      this._isAuthenticated = value;
+    },
     async login(username: string) {
       const userStore = useUserStore();
       try {
@@ -22,8 +28,8 @@ export const useAuthStore = defineStore("auth", {
           response.data?.[0].username === username
         ) {
           userStore.user = response.data?.[0];
-          this.currentUser = username;
-          this._isAuthenticated = true;
+          this.setCurrentUser(username);
+          this.setAuthenticated(true);
         } else {
           return Promise.reject("Invalid credentials");
         }
@@ -31,12 +37,6 @@ export const useAuthStore = defineStore("auth", {
         console.error("[Error happened during login]", error);
         return Promise.reject("Login failed");
       }
-    },
-    setCurrentUser(username: string) {
-      this.currentUser = username;
-    },
-    setAuthenticated(value: boolean) {
-      this._isAuthenticated = value;
     },
     logout() {
       const userStore = useUserStore();

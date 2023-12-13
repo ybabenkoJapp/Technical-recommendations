@@ -15,6 +15,7 @@ export const usePostStore = defineStore("post", {
         .then((res) => (this.posts = res.data))
         .catch((error) => console.log(error));
     },
+
     async addPost(postData: IPost) {
       try {
         const response = await axios.post("posts", postData);
@@ -25,6 +26,7 @@ export const usePostStore = defineStore("post", {
         console.error("Error adding post:", error);
       }
     },
+
     async deletePost(postId: number) {
       try {
         const response = await axios.delete(`posts/${postId}`);
@@ -53,6 +55,7 @@ export const usePostStore = defineStore("post", {
         console.error("Error updating post:", error);
       }
     },
+
     getPostData(postId: number) {
       return this.posts.find((post) => post.id === postId);
     },

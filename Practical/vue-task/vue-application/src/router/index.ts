@@ -11,6 +11,7 @@ import PostsView from "@/views/PostsView.vue";
 import PostView from "@/views/PostView.vue";
 import AlbumsView from "@/views/AlbumsView.vue";
 import PhotosView from "@/views/PhotosView.vue";
+import UsersView from "@/views/UsersView.vue";
 
 export const routes: RouteRecordRaw[] = [];
 routes.push(
@@ -52,6 +53,7 @@ routes.push(
     path: "/users",
     name: "users",
     beforeEnter: userRouteGuard,
+    component: UsersView,
     meta: { requiresAuth: true },
   },
 );

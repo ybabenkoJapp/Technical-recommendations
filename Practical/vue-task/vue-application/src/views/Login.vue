@@ -61,6 +61,7 @@ watchEffect(() => {
   validatePassword();
 });
 
+// track end input paste data
 const setUsernameError = (message: string) => {
   usernameErrorMessages.value = [message];
 };
@@ -68,6 +69,8 @@ const setUsernameError = (message: string) => {
 const setPasswordError = (message: string) => {
   passwordErrorMessages.value = [message];
 };
+
+// add simple validation for email and password minimal password length
 </script>
 
 <template>

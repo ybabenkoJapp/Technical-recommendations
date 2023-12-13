@@ -1,18 +1,23 @@
 <script lang="ts" setup>
 import { useUserStore } from "@/stores";
 
-const currentUser = useUserStore();
+const userStore = useUserStore();
+
+const currentUser = userStore.getUser;
 </script>
 
 <template>
-  <div>
-    <h2>This is a home page</h2>
-    <pre>Current user data: {{ currentUser.user }}</pre>
-  </div>
+  <section>
+    <v-card>
+      <v-card-title>{{ currentUser.name }}</v-card-title>
+      <v-card-subtitle>{{ currentUser.username }}</v-card-subtitle>
+      <v-card-text>
+        <p>{{ currentUser.email }}</p>
+        <p>
+          {{ currentUser.address.city }}, {{ currentUser.address.street }},
+          {{ currentUser.address.suite }}
+        </p>
+      </v-card-text>
+    </v-card>
+  </section>
 </template>
-
-<style scoped>
-div {
-  margin-left: 400px;
-}
-</style>

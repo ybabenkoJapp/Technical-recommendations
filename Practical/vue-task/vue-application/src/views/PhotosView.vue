@@ -145,9 +145,3 @@ async function saveEdit() {
     </v-card>
   </v-dialog>
 </template>
-
-<style>
-.photos-view {
-  width: 100vw;
-}
-</style>

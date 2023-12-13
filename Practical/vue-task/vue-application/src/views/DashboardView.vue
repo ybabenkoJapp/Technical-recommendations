@@ -8,7 +8,6 @@ const links = routes
   .filter((route) => route.title !== "post");
 </script>
 <template>
-  <!--  <pre>{{ links }}</pre>-->
   <v-navigation-drawer app>
     <v-list-item>
       <v-list-item-content>

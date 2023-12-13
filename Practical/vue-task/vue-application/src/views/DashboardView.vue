@@ -1,9 +1,14 @@
 <script lang="ts" setup>
 import { routes } from "@/router";
+import { useUserStore } from "@/stores";
 
-const links = routes.map((link) => ({ title: link.name, route: link.path }));
+const userStore = useUserStore();
+const links = routes
+  .map((link) => ({ title: link.name, route: link.path }))
+  .filter((route) => route.title !== "post");
 </script>
 <template>
+  <!--  <pre>{{ links }}</pre>-->
   <v-navigation-drawer app>
     <v-list-item>
       <v-list-item-content>

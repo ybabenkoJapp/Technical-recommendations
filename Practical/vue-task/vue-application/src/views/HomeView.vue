@@ -9,16 +9,22 @@ const currentUser: IUser = userStore.getUser;
 
 <template>
   <section>
-    <v-card>
-      <v-card-title>{{ currentUser.name }}</v-card-title>
-      <v-card-subtitle>{{ currentUser.username }}</v-card-subtitle>
+    <v-card v-if="Object.values(currentUser).length">
+      <v-card-title>{{ currentUser?.name }}</v-card-title>
+      <v-card-subtitle>{{ currentUser?.username }}</v-card-subtitle>
       <v-card-text>
-        <p>{{ currentUser.email }}</p>
+        <p>{{ currentUser?.email }}</p>
         <p>
-          {{ currentUser.address.city }}, {{ currentUser.address.street }},
-          {{ currentUser.address.suite }}
+          {{ currentUser?.address?.city }}, {{ currentUser?.address?.street }},
+          {{ currentUser?.address?.suite }}
         </p>
       </v-card-text>
     </v-card>
+    <div v-else>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. A dolorum, illo
+      laudantium pariatur unde voluptas. Adipisci aliquam cum cumque, deserunt
+      dignissimos eaque exercitationem harum numquam officia quaerat,
+      reprehenderit suscipit voluptate!
+    </div>
   </section>
 </template>

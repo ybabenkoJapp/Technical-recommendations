@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import { useUserStore } from "@/stores";
+import type { IUser } from "@/app-types/IUser";
 
 const userStore = useUserStore();
 
-const currentUser = userStore.getUser;
+const currentUser: IUser = userStore.getUser;
 </script>
 
 <template>

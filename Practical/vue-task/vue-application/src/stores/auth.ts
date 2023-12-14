@@ -7,6 +7,7 @@ export const useAuthStore = defineStore("auth", {
   state: () => ({
     _isAuthenticated: false,
     currentUser: "",
+    token: null,
   }),
   getters: {
     getCurrentUser: (state) => state.currentUser,
@@ -30,6 +31,14 @@ export const useAuthStore = defineStore("auth", {
           userStore.user = response.data?.[0];
           this.setCurrentUser(username);
           this.setAuthenticated(true);
+          const user = {
+            id: response.data?.[0]?.id,
+            username: response.data?.[0]?.username,
+            role: "user",
+          };
+          const token = this.createFakeToken(user);
+          this.token = token;
+          sessionStorage.setItem("token", token);
         } else {
           return Promise.reject("Invalid credentials");
         }
@@ -43,6 +52,17 @@ export const useAuthStore = defineStore("auth", {
       userStore.user = {} as IUser;
       this.currentUser = "";
       this._isAuthenticated = false;
+      this.token = null;
+      sessionStorage.removeItem("token");
+    },
+    createFakeToken(userData) {
+      const header = btoa(JSON.stringify({ alg: "HS256", typ: "JWT" }));
+      const payload = btoa(JSON.stringify(userData));
+      const secretKey = "ha-ha-ha-fake-secret-key";
+      const signature = btoa(
+        new TextEncoder().encode(`${header}.${payload}.${secretKey}`),
+      );
+      return `${header}.${payload}.${signature}`;
     },
   },
 });

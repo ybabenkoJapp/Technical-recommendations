@@ -22,6 +22,12 @@ const login = async () => {
     ) {
       authStore.setCurrentUser(username.value);
       authStore.setAuthenticated(true);
+      const token = authStore.createFakeToken({
+        id: 123,
+        username: username.value,
+        role: "editor",
+      });
+      sessionStorage.setItem("token", token);
       // Redirect to home or user page
       await router.push({
         name: "users",

@@ -4,7 +4,11 @@ import { useUserStore } from "@/stores/users";
 import type { IUser } from "@/app-types/IUser";
 
 export const useAuthStore = defineStore("auth", {
-  state: () => ({
+  state: (): {
+    _isAuthenticated: boolean;
+    currentUser: string;
+    token: string | null;
+  } => ({
     _isAuthenticated: false,
     currentUser: "",
     token: null,

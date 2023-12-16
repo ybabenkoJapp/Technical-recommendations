@@ -63,8 +63,11 @@ export const useAuthStore = defineStore("auth", {
       const header = btoa(JSON.stringify({ alg: "HS256", typ: "JWT" }));
       const payload = btoa(JSON.stringify(userData));
       const secretKey = "ha-ha-ha-fake-secret-key";
+      // took information from here https://stackoverflow.com/questions/12710001/how-to-convert-uint8-array-to-base64-encoded-string
+      const decoder = new TextDecoder("utf8");
+      const encoder = new TextEncoder();
       const signature = btoa(
-        new TextEncoder().encode(`${header}.${payload}.${secretKey}`),
+        decoder.decode(encoder.encode(`${header}.${payload}.${secretKey}`)),
       );
       return `${header}.${payload}.${signature}`;
     },

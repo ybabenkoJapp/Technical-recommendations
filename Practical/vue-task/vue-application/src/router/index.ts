@@ -1,8 +1,4 @@
-import type {
-  NavigationGuardNext,
-  RouteLocationNormalized,
-  RouteRecordRaw,
-} from "vue-router";
+import type { RouteRecordRaw } from "vue-router";
 import * as VueRouter from "vue-router";
 import { useAuthStore } from "@/stores";
 import HomeView from "@/views/HomeView.vue";
@@ -52,9 +48,9 @@ routes.push(
   {
     path: "/users",
     name: "users",
-    beforeEnter: userRouteGuard,
+    // beforeEnter: userRouteGuard,
     component: UsersView,
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, editorOnly: true },
   },
 );
 
@@ -65,13 +61,18 @@ const router = VueRouter.createRouter({
 
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
+  const sessionUser = sessionStorage.getItem("user");
   // Check if the route requires authentication
   if (to.meta.requiresAuth) {
     // Check if the user is authenticated
     if (!authStore.isAuthenticated) {
       // Redirect to login page if not authenticated
       next({ name: "login" });
-    } else if (to.meta.editorOnly && authStore.getCurrentUser !== "editor") {
+    } else if (
+      to.meta.editorOnly &&
+      sessionUser &&
+      JSON.parse(sessionUser).username !== "editor"
+    ) {
       // Redirect to home if user is not an editor but tries to access an editor-only route
       next({ name: "home" });
     } else {
@@ -84,17 +85,17 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-function userRouteGuard(
-  to: RouteLocationNormalized,
-  from: RouteLocationNormalized,
-  next: NavigationGuardNext,
-) {
-  const authStore = useAuthStore();
-  if (authStore.getCurrentUser === "editor") {
-    next();
-  } else {
-    next({ name: "home" });
-  }
-}
+// function userRouteGuard(
+//   to: RouteLocationNormalized,
+//   from: RouteLocationNormalized,
+//   next: NavigationGuardNext,
+// ) {
+//   const authStore = useAuthStore();
+//   if (authStore.getCurrentUser === "editor") {
+//     next();
+//   } else {
+//     next({ name: "home" });
+//   }
+// }
 
 export default router;

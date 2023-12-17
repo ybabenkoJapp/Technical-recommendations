@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import { ref, watchEffect } from "vue";
-import { useAuthStore } from "@/stores";
+import { useAuthStore, useUserStore } from "@/stores";
 import { useRouter } from "vue-router";
+import type { IUser } from "@/app-types/IUser";
 
 const authStore = useAuthStore();
+const userStore = useUserStore();
 const username = ref("");
 const password = ref("");
 const router = useRouter();
@@ -22,6 +24,7 @@ const login = async () => {
     ) {
       authStore.setCurrentUser(username.value);
       authStore.setAuthenticated(true);
+      userStore.setUser({ username: username.value } as IUser, "editor");
       const token = authStore.createFakeToken({
         id: 123,
         username: username.value,

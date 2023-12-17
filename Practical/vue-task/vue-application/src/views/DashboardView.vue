@@ -1,18 +1,41 @@
 <script lang="ts" setup>
 import { routes } from "@/router";
 import { useUserStore } from "@/stores";
+import { onMounted, ref, watch } from "vue";
+import type { RouteRecordName } from "vue-router";
 
 const userStore = useUserStore();
-const links = routes
-  .map((link) => ({ title: link.name, route: link.path }))
-  .filter((route) => route.title !== "post");
+const userRole = ref(userStore.getUserRole);
+const links = ref<{ title?: RouteRecordName; route: string }[]>([]);
+
+const updateRoutes = () => {
+  links.value = routes
+    .filter((route) => {
+      if (route.name === "users") {
+        return userRole.value === "editor";
+      } else return !(route.name === "post" || route.name === "login");
+    })
+    .map((route) => ({ title: route.name, route: route.path }));
+};
+
+onMounted(() => {
+  userRole.value = sessionStorage.getItem("role") || userStore.getUserRole;
+  updateRoutes();
+});
+
+watch(
+  () => userStore.getUserRole,
+  (newUserRole) => {
+    userRole.value = newUserRole;
+    updateRoutes();
+  },
+);
 </script>
+
 <template>
   <v-navigation-drawer app>
     <v-list-item>
-      <v-list-item-content>
-        <v-list-item-title class="subtitle-2">My Application</v-list-item-title>
-      </v-list-item-content>
+      <v-list-item-title class="subtitle-2">My Application</v-list-item-title>
     </v-list-item>
     <v-divider></v-divider>
     <v-list class="py-1" dense flat nav>
@@ -22,9 +45,7 @@ const links = routes
         :to="item.route"
         link
       >
-        <v-list-item-content>
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item-content>
+        <v-list-item-title>{{ item.title }}</v-list-item-title>
       </v-list-item>
     </v-list>
   </v-navigation-drawer>

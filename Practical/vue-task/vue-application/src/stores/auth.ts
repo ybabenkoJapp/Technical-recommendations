@@ -32,7 +32,7 @@ export const useAuthStore = defineStore("auth", {
           response.data?.length > 0 &&
           response.data?.[0].username === username
         ) {
-          userStore.setUser(response.data?.[0]);
+          userStore.setUser(response.data?.[0], "user");
           this.setCurrentUser(username);
           this.setAuthenticated(true);
           const user = {
@@ -53,10 +53,11 @@ export const useAuthStore = defineStore("auth", {
     },
     logout() {
       const userStore = useUserStore();
-      userStore.user = {} as IUser;
       this.currentUser = "";
       this._isAuthenticated = false;
       this.token = null;
+      userStore.setUser(null, "");
+      userStore.setUsers([]);
       sessionStorage.clear();
     },
     createFakeToken(userData: { id: number; username: string; role: string }) {

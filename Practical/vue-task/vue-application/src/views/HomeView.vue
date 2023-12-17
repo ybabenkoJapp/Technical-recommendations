@@ -1,15 +1,26 @@
 <script lang="ts" setup>
-import { useUserStore } from "@/stores";
 import type { IUser } from "@/app-types/IUser";
+import { onMounted, ref } from "vue";
 
-const userStore = useUserStore();
+const currentUser = ref<IUser>({} as IUser);
 
-const currentUser: IUser = userStore.getUser;
+onMounted(() => {
+  const sessionUser = sessionStorage.getItem("user");
+  if (sessionUser) {
+    currentUser.value = JSON.parse(sessionUser);
+  }
+});
 </script>
 
 <template>
   <section>
-    <v-card v-if="Object.values(currentUser).length">
+    <v-card v-if="currentUser?.username === 'editor'">
+      <v-card-title>Hello {{ currentUser?.username }}!</v-card-title>
+      <v-card-text>
+        <p>Nice to see you again!</p>
+      </v-card-text>
+    </v-card>
+    <v-card v-else-if="Object.values(currentUser).length">
       <v-card-title>{{ currentUser?.name }}</v-card-title>
       <v-card-subtitle>{{ currentUser?.username }}</v-card-subtitle>
       <v-card-text>

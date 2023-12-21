@@ -60,7 +60,7 @@ export const useUserStore = defineStore("user", {
           sessionStorage.setItem("users", JSON.stringify(this.users));
         }
       } else {
-        this.users.length = 0;
+        this.users = [];
       }
     },
   },

@@ -52,6 +52,7 @@ routes.push(
     component: UsersView,
     meta: { requiresAuth: true, editorOnly: true },
   },
+  // TODO add 404 page
 );
 
 const router = VueRouter.createRouter({

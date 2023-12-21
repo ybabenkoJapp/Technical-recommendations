@@ -12,7 +12,7 @@ const showModal = ref(false);
 
 <template>
   <v-card class="mx-auto my-5 position-relative" width="1000">
-    <v-list-item :to="{ name: 'post', params: { id: id } }" link title="Post">
+    <v-list-item :to="{ name: 'post', params: { id } }" link title="Post">
       <template v-slot:title> {{ title }}</template>
     </v-list-item>
     <Modal :show="showModal" @update:show="(val) => (showModal = val)">
